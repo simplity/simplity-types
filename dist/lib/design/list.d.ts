@@ -1,4 +1,4 @@
-import { StringMap } from '../';
+import { StringMap } from '../..';
 /**
  * value-displayed Text pair that is generally used to
  * create an option element in a select(drop-down) element

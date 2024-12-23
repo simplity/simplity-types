@@ -1,4 +1,4 @@
-import { StringMap, BaseComponent, PageAttributes } from '..';
+import { StringMap, BaseComponent, PageAttributes } from '../..';
 /**
  * alterations, enhancements to a generated page.
  * May also be used to customize a page for a specific tenant

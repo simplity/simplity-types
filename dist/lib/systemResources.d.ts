@@ -1,6 +1,6 @@
 export declare const systemResources: {
     records: {
-        _reportSettings: import(".").SimpleRecord;
+        _reportSettings: import("..").SimpleRecord;
     };
     messages: {
         readonly _internalError: "An error was encountered while processing the request. An alert has been raised for the support team to look into this. You may try again to see if the error was due to some transient situations";
@@ -26,6 +26,6 @@ export declare const systemResources: {
         readonly _invalidName: "Name may have a max of 50 characters";
         readonly _missingSchema: "Unable to validate this field because a value schema by name ${1} is missing";
     };
-    valueLists: import("./common").StringMap<import(".").ValueList>;
-    valueSchemas: import("./common").StringMap<import(".").ValueSchema>;
+    valueLists: import("./common").StringMap<import("..").ValueList>;
+    valueSchemas: import("./common").StringMap<import("..").ValueSchema>;
 };

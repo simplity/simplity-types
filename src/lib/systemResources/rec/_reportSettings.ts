@@ -1,4 +1,4 @@
-import { SimpleRecord } from '../..';
+import { SimpleRecord } from '../../..';
 
 export const _reportSettings: SimpleRecord = {
   name: '_reportSettings',

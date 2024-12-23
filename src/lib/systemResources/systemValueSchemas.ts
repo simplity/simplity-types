@@ -1,5 +1,5 @@
-import { StringMap } from '..';
-import { ValueSchema } from '..';
+import { StringMap } from '../..';
+import { ValueSchema } from '../..';
 
 export const systemValueSchemas: StringMap<ValueSchema> = {
   _name: {

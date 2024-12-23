@@ -1,4 +1,4 @@
-import { ValueType } from '..';
+import { ValueType } from '../..';
 export type ReadSql = {
     name: string;
     description: string;

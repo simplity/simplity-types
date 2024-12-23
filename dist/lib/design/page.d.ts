@@ -9,7 +9,7 @@
  * This is like the .html file that specifies all the attributes of the DOM.
  *
  */
-import { FieldRendering, FormOperation, SortBy, StringMap, VisualWidth, Values, ValueType, Value, BaseView, Markups, ValueRenderingDetails, Comparator, FormController, SimpleList } from '..';
+import { FieldRendering, FormOperation, SortBy, StringMap, VisualWidth, Values, ValueType, Value, BaseView, Markups, ValueRenderingDetails, Comparator, FormController, SimpleList } from '../..';
 /**
  * basic attributes of a Page.
  * This type-alias is created to re-use the base attributes for PageAlterations

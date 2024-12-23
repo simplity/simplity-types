@@ -15,7 +15,7 @@ import {
   TableEditorView,
   TableViewerView,
   BaseView,
-} from '..';
+} from '../..';
 
 /**
  * base interface to be implemented by the form/table controllers

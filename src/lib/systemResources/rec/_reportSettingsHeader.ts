@@ -1,4 +1,4 @@
-import { SimpleRecord } from '../..';
+import { SimpleRecord } from '../../..';
 
 export const _reportSettingsHeader: SimpleRecord = {
   name: '_reportSettingsHeader',

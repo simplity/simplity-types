@@ -4,110 +4,21 @@ import {
   StringMap,
   Value,
   AppController,
-  Layout,
-  MenuItem,
-  Module,
   KeyedList,
   SimpleList,
   ValueList,
-  Page,
   FormController,
   PageController,
   DetailedMessage,
   ServiceResponse,
-  Form,
   Vo,
   Markups,
   Values,
-} from '..';
+  CommonToDesignAndRunTime,
+} from '../..';
 
-export type RuntimeApp = {
-  name: string;
-  version: string;
-  date: string;
-
-  description: string;
-  /**
-   * default max length to be used for a text-value-schema with no max specified
-   */
-  maxLengthForTextField: number;
-  /**
-   * simplity agent manages login process, if it is configured at the app level.
-   * this service, if specified, has to conform to the login-specific API
-   */
-  loginServiceName?: string;
-  /**
-   * simplity agent invokes the logout service, but does not expect any response back.
-   */
-  logoutServiceName?: string;
-  /**
-   * URL for the server. All requests are sent to this url.
-   * Only local resources are used if the url is not set
-   */
-  serverUrl?: string;
-  /**
-   * e.g. ./assets/images/
-   */
-  imageBasePath: string;
-
-  /**
-   * layout to render on load
-   */
-  startingLayout: string;
-
-  /**
-   * module to be selected by default on loading
-   */
-  startingModule: string;
-
-  /**
-   * ready responses are cached responses by serviceNames.
-   * this feature is useful during development and for demo purposes
-   * if a ready response is available, the response is used instead of calling a service
-   */
-  cachedResponses?: StringMap<ServiceResponse>;
-
-  /**
-   * forms have the details to manage the UX to render and receive data from the users
-   */
-  forms?: StringMap<Form>;
-  /**
-   * functions with specs and actual implementations
-   */
-  functionDetails?: StringMap<FunctionDetails>;
-
-  /**
-   * all the html source/text for the view components
-   */
-  htmls?: StringMap<string>;
-  /**
-   * how the visual components are laid out on the canvas.
-   * layout is a design component that is used as it is at run time
-   */
-  layouts?: StringMap<Layout>;
-
-  /**
-   * should no tbe considered as definitive. Any missing source should be considered as "run-time"
-   */
-  listSources?: StringMap<ListSource>;
-  /**
-   * menu items are design components used at runtime as well
-   */
-  menuItems?: StringMap<MenuItem>;
-
-  /**
-   * possibly translated for the local language??
-   */
-  messages?: StringMap<string>;
-
-  /**
-   * modules are design components that are used  at runtime as well
-   */
-  modules?: StringMap<Module>;
-  /**
-   * pages are design components that are used at runtime as well
-   */
-  pages?: StringMap<Page>;
+export type RuntimeApp = CommonToDesignAndRunTime & {
+  //////////// added by the app-layer by programmers
   /**
    * local lists are cached responses to getList(). Useful during development/demo
    * this is a run-time concept to override a design component at run time
@@ -120,14 +31,9 @@ export type RuntimeApp = {
   localServices?: StringMap<Service>;
 
   /**
-   * validation functions are primarily derived from value-schema
+   * functions with specs and actual implementations
    */
-  validationFns?: StringMap<ValueValidationFn>;
-
-  /**
-   * app-specific parameters. App should define a type for this for making it type-safe
-   */
-  appParams?: { [key: string]: any };
+  functionDetails?: StringMap<FunctionDetails>;
 };
 
 /**

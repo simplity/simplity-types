@@ -1,4 +1,4 @@
-import { Alert, BaseComponent, Button, DataField, FormController, LeafComponent, NavigationAction, Page, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, Tabs, Value, ValueRenderingDetails, Values } from '..';
+import { Alert, BaseComponent, Button, DataField, FormController, LeafComponent, NavigationAction, Page, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, Tabs, Value, ValueRenderingDetails, Values } from '../..';
 /**
  * An App-view is the outer most container component inside of which the relevant view components are laid out
  * When an AppView instance is created, it should not have any child layouts in that.

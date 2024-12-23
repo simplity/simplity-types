@@ -13,14 +13,22 @@ import {
   Form,
   ListSource,
   FunctionType,
-} from '..';
+} from '../..';
 
-export type AppDetails = {
+/**
+ *   attributes/components that are used as-they-are at run time
+ */
+export type CommonToDesignAndRunTime = {
   name: string;
   version: string;
   date: string;
 
   description: string;
+  /**
+   *  app-specific configuration parameters that may used by app-specific functions
+   */
+  appParams?: { [key: string]: any };
+
   /**
    * default max length to be used for a text-value-schema with no max specified
    */
@@ -55,9 +63,75 @@ export type AppDetails = {
   startingModule: string;
 
   /**
-   *  app-specific
+   * ready responses are cached responses by serviceNames,  by the client.
+   * we may also decide to shift them to the server side on a need basis.
+   * this feature is useful during development and for demo purposes
+   * if a ready response is available, the response is used instead of calling a service
    */
-  appParams?: { [key: string]: any };
+  cachedResponses?: StringMap<ServiceResponse>;
+
+  /**
+   * page layouts. The way the page as the user views is laid out from its components
+   */
+  layouts?: StringMap<Layout>;
+
+  /**
+   * how the visual components are laid out on the canvas
+   */
+  menuItems?: StringMap<MenuItem>;
+
+  /**
+   * run-time messages
+   */
+  messages?: StringMap<string>;
+
+  /**
+   * modules of the app. It's a logical grouping of pages
+   */
+  modules?: StringMap<Module>;
+  /**
+   * validation schemas
+   */
+  valueSchemas?: StringMap<ValueSchema>;
+
+  /**
+   * all the html source/text for the view components
+   */
+  htmls?: StringMap<string>;
+
+  ///////// components that are possibly generated using dev-utils
+  /**
+   * how to get list of name-value pairs for drop-down boxes?
+   */
+  listSources?: StringMap<ListSource>;
+  /**
+   * forms that are generated from records
+   */
+  forms?: StringMap<Form>;
+
+  /**
+   * pages that are hand-coded by the app-designer, without using any template
+   */
+  pages?: StringMap<Page>;
+};
+export type AppDesign = CommonToDesignAndRunTime /**
+ * parameters and components that are either transformed or used to generate other components
+ */ & {
+  ///////////// templating technique to generate stereo-type design components
+  /**
+   * page templates are short-cuts to generate a standard (predefined-format) page.
+   */
+  templates?: StringMap<PageTemplate>;
+  /**
+   * small alteration to a designed or generated page.
+   */
+  pageAlterations?: StringMap<PageAlteration>;
+
+  ///////////////// components that are used to generate run-time artifacts or other
+  /**
+   * sqls are server-side components to interface with the database
+   */
+  sqls?: StringMap<Sql>;
 
   /**
    * if this app is an multi-tenant app.
@@ -71,42 +145,15 @@ export type AppDetails = {
    * server-side. Used for generating java classes
    */
   javaRootPackageName?: string;
-};
 
-export type AppDesign = {
-  appDetails: AppDetails;
-
-  /**
-   * ready responses are cached responses by serviceNames,  by the client.
-   * we may also decide to shift them to the server side on a need basis.
-   * this feature is useful during development and for demo purposes
-   * if a ready response is available, the response is used instead of calling a service
-   */
-  cachedResponses?: StringMap<ServiceResponse>;
-
-  /**
-   * forms that are generated from records
-   */
-  forms?: StringMap<Form>;
-  layouts?: StringMap<Layout>;
   /**
    * all functions defined for this app. Note that the function name has to be unique across all pages.
    * an App may follow naming convention like pageName.functionName if the app is quite large
    */
   functions?: StringMap<FunctionType>;
-  listSources?: StringMap<ListSource>;
 
   /**
-   * how the visual components are laid out on the canvas
+   * API (input-output) specification for all the services that are exposed by the server-app for the client-app
    */
-  menuItems?: StringMap<MenuItem>;
-  messages?: StringMap<string>;
-  modules?: StringMap<Module>;
-  pages?: StringMap<Page>;
-
-  pageAlterations?: StringMap<PageAlteration>;
   serviceSpecs?: StringMap<ServiceSpec>;
-  sqls?: StringMap<Sql>;
-  templates?: StringMap<PageTemplate>;
-  valueSchemas?: StringMap<ValueSchema>;
 };

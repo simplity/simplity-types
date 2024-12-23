@@ -1,2 +1,2 @@
-import { SimpleRecord } from '../..';
+import { SimpleRecord } from '../../..';
 export declare const _filters: SimpleRecord;

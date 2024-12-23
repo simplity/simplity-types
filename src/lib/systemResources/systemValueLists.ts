@@ -1,5 +1,5 @@
-import { StringMap } from '..';
-import { RuntimeList, ValueList } from '..';
+import { StringMap } from '../..';
+import { RuntimeList, ValueList } from '../..';
 
 export const systemValueLists: StringMap<ValueList> = {
   _reportName: {

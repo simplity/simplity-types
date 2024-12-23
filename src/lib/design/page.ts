@@ -24,7 +24,7 @@ import {
   Comparator,
   FormController,
   SimpleList,
-} from '..';
+} from '../..';
 /**
  * basic attributes of a Page.
  * This type-alias is created to re-use the base attributes for PageAlterations

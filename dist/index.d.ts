@@ -1,5 +1,4 @@
 export * from './lib/agent';
-export * from './lib/appMetaData';
 export * from './lib/common';
 export * from './lib/logger';
 export * from './lib/design/appDesign';

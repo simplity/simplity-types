@@ -4,7 +4,7 @@ import {
   MenuButton,
   SortBy,
   StringMap,
-} from '..';
+} from '../..';
 
 /**
  * template for a simple master that creates three pages:

@@ -1,4 +1,4 @@
-import { SimpleList, ValueType } from '..';
+import { SimpleList, ValueType } from '../..';
 
 /**
  * Record is an ordered set of data elements

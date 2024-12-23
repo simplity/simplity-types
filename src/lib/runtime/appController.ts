@@ -15,7 +15,7 @@ import {
   SimpleList,
   FunctionType,
   ValueType,
-} from '..';
+} from '../..';
 
 /**
  * App controller provides centralized services for all its components

@@ -1,4 +1,4 @@
-import { FilterCondition, ServiceResponse, SortBy, Vo } from '..';
+import { FilterCondition, ServiceResponse, SortBy, Vo } from '../..';
 
 /**
  * Service is a function that responds with its response when invoked with its specified, possibly optional, input data

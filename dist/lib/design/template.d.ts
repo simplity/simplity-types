@@ -1,4 +1,4 @@
-import { FilterCondition, FilterRequestVo, MenuButton, SortBy, StringMap } from '..';
+import { FilterCondition, FilterRequestVo, MenuButton, SortBy, StringMap } from '../..';
 /**
  * template for a simple master that creates three pages:
  * 1. masterList : list of all rows. Each row has view and edit buttons.

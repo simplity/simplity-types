@@ -1,4 +1,4 @@
-import { AppController, Vo, Alert, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy } from '..';
+import { AppController, Vo, Alert, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy } from '../..';
 /**
  * options for a service request
  */

@@ -13,7 +13,7 @@ import {
   FormOperation,
   FilterCondition,
   SortBy,
-} from '..';
+} from '../..';
 
 /**
  * options for a service request

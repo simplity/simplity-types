@@ -1,4 +1,4 @@
-import { DataField, FormOperation, InterFieldValidation, StringMap } from '..';
+import { DataField, FormOperation, InterFieldValidation, StringMap } from '../..';
 /**
  * form has the meta data for the data model.
  * A page generally uses a form to create form-data as its run-time data

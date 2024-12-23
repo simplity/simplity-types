@@ -1,4 +1,4 @@
-import { Values, Vo, Layout, MenuItem, Module, Page, Form, NavigationAction, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType } from '..';
+import { Values, Vo, Layout, MenuItem, Module, Page, Form, NavigationAction, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType } from '../..';
 /**
  * App controller provides centralized services for all its components
  * This run-time component is built using all the app-components and scripts/functions of the app

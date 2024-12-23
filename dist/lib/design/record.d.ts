@@ -1,4 +1,4 @@
-import { SimpleList, ValueType } from '..';
+import { SimpleList, ValueType } from '../..';
 /**
  * Record is an ordered set of data elements
  * It is a server-side concept. However, it is used to generate forms that are used by the client-sde-apps

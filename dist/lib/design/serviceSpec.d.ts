@@ -1,4 +1,4 @@
-import { Vo } from '..';
+import { Vo } from '../..';
 /**
  * serviceSpec describes a service. services are the basic contract between the client-app and the server-app
  */

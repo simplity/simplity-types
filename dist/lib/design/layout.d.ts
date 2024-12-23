@@ -1,4 +1,4 @@
-import { Values } from '..';
+import { Values } from '../..';
 /**
  * Layout is the top level view component.
  * Layout defines how the next level components are spread on the view canvass

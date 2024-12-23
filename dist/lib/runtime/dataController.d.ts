@@ -1,4 +1,4 @@
-import { Value, Vo, PageController, Values, DisplaySettings, FilterCondition, SortBy, Panel, Form, EventDetails, DetailedMessage, StringMap, EventName, TableEditorView, TableViewerView, BaseView } from '..';
+import { Value, Vo, PageController, Values, DisplaySettings, FilterCondition, SortBy, Panel, Form, EventDetails, DetailedMessage, StringMap, EventName, TableEditorView, TableViewerView, BaseView } from '../..';
 /**
  * base interface to be implemented by the form/table controllers
  */

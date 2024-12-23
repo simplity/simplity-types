@@ -17,7 +17,7 @@ import {
   Value,
   ValueRenderingDetails,
   Values,
-} from '..';
+} from '../..';
 
 /**
  * An App-view is the outer most container component inside of which the relevant view components are laid out
