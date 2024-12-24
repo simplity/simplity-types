@@ -2,8 +2,9 @@
   "name": "simplity-types",
   "version": "0.0.1",
   "description": "Type definition for simplity-* packages for building client-side apps",
-  "main": "index.ts",
-  "scripts": {
+  "main": "dist/index.js",
+  "types":"dist/index.d.ts",
+    "scripts": {
     "build": "tsc"
   },
   "repository": {
