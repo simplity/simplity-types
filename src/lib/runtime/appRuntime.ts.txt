@@ -14,10 +14,10 @@ import {
   Vo,
   Markups,
   Values,
-  CommonToDesignAndRunTime,
+  AppMetaData,
 } from '../..';
 
-export type RuntimeApp = CommonToDesignAndRunTime & {
+export type RuntimeApp = AppMetaData & {
   //////////// added by the app-layer by programmers
   /**
    * local lists are cached responses to getList(). Useful during development/demo

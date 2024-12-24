@@ -18,7 +18,7 @@ import {
 /**
  *   attributes/components that are used as-they-are at run time
  */
-export type CommonToDesignAndRunTime = {
+type AppCommonOnes = {
   name: string;
   version: string;
   date: string;
@@ -98,26 +98,25 @@ export type CommonToDesignAndRunTime = {
    * all the html source/text for the view components
    */
   htmls?: StringMap<string>;
+};
 
-  ///////// components that are possibly generated using dev-utils
+/**
+ * Meta data that the app-designer creates.
+ * Some are used to generate other artifacts.
+ * Some are used as they are in the run-time system.
+ */
+export type AppMetaData = AppCommonOnes & {
   /**
    * how to get list of name-value pairs for drop-down boxes?
+   * run-time list sources are used to generate run-time components
+   * design-time list sources are converted as "valueLists"
    */
   listSources?: StringMap<ListSource>;
-  /**
-   * forms that are generated from records
-   */
-  forms?: StringMap<Form>;
 
   /**
    * pages that are hand-coded by the app-designer, without using any template
    */
   pages?: StringMap<Page>;
-};
-export type AppDesign = CommonToDesignAndRunTime /**
- * parameters and components that are either transformed or used to generate other components
- */ & {
-  ///////////// templating technique to generate stereo-type design components
   /**
    * page templates are short-cuts to generate a standard (predefined-format) page.
    */
@@ -156,4 +155,13 @@ export type AppDesign = CommonToDesignAndRunTime /**
    * API (input-output) specification for all the services that are exposed by the server-app for the client-app
    */
   serviceSpecs?: StringMap<ServiceSpec>;
+};
+export type AppDesign = AppMetaData & {
+  /**
+  /**
+   * forms that are generated from records
+   */
+  forms?: StringMap<Form>;
+
+  ///////////// templating technique to generate stereo-type design components
 };
