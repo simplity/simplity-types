@@ -37,7 +37,7 @@ export type AppDesign = CommonOnes &
  * All the components that make-up the runtime for this app.
  * Essentially Design + functions
  */
-export type AppRuntine = CommonOnes & onlyRuntime & DesignAndRuntime;
+export type AppRuntime = CommonOnes & onlyRuntime & DesignAndRuntime;
 
 /**
  * metadata that is used as part of runtime as well.
