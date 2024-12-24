@@ -191,6 +191,15 @@ export type BaseComponent = {
  */
 export type ComponentType = 'button' | 'field' | 'panel' | 'static' | 'table' | 'tabs';
 /**
+ * a visual component of a page
+ */
+export type PageComponent = Button | DataField | Panel | StaticComp | TableViewer | TableEditor | Tabs | Tab;
+/**
+ * subset of page visual components that just act as containers for their child components
+ */
+export type ContainerComponent = Panel | Tabs | Tab;
+export type LeafComponent = DataField | Button | StaticComp;
+/**
  * meta data for a button
  */
 export type Button = BaseComponent & {
@@ -285,7 +294,7 @@ export type Panel = BaseComponent & {
     /**
      * contents of this panel
      */
-    children: BaseComponent[];
+    children: PageComponent[];
     /**
      * name of the child-form that defines the data fields in this panel.
      * Important to note that the name of the panel is the name with which ths sub-form is known to the parent-form
@@ -471,12 +480,7 @@ export type Tab = Panel & {
      */
     icon?: string;
 };
-export type ContainerComponent = Panel | Tabs | Tab;
-export type LeafComponent = DataField | Button | StaticComp;
-/**
- * A piece of work/task that is typically triggered through an event
- */
-export type Action = {
+type BaseAction = {
     name: string;
     type: ActionType;
     /**
@@ -493,11 +497,18 @@ export type Action = {
      */
     toDisableUx?: boolean;
 };
-export type ActionType = 'function' | 'form' | 'service' | 'navigation';
+/**
+ * valid actionType values
+ */
+export type ActionType = 'function' | 'form' | 'service' | 'navigation' | 'view';
+/**
+ * A piece of work/task that is typically triggered through an event
+ */
+export type Action = FunctionAction | FormAction | ServiceAction | NavigationAction | ViewAction;
 /**
  * action that requires specific programming logic. This is implemented as a function in the app
  */
-export type FunctionAction = Action & {
+export type FunctionAction = BaseAction & {
     type: 'function';
     /**
      * function name must be one of the functions defined in this page
@@ -509,7 +520,7 @@ export type FunctionAction = Action & {
 /**
  * form related action, like fetching and saving form data
  */
-export type FormAction = Action & {
+export type FormAction = BaseAction & {
     type: 'form';
     formOperation: FormOperation;
 };
@@ -551,9 +562,9 @@ export type SaveAction = FormAction & {
     formOperation: 'save';
 };
 /**
- * change the attribute of a component
+ * change the view related attribute of a component
  */
-export type ViewAction = Action & {
+export type ViewAction = BaseAction & {
     actionType: 'view';
     compName: string;
     attribute: string;
@@ -614,7 +625,7 @@ export type FilterParameters = {
 /**
  * request a specific service
  */
-export type ServiceAction = Action & {
+export type ServiceAction = BaseAction & {
     type: 'service';
     serviceName: string;
     /**
@@ -653,7 +664,7 @@ export type ServiceAction = Action & {
 /**
  * event triggered to navigate to a page or a module
  */
-export type NavigationAction = Action & {
+export type NavigationAction = BaseAction & {
     type: 'navigation';
     /**
      * user is warned and is asked to reconfirm before taking this action, in case the form is modified by the user
@@ -728,3 +739,4 @@ export type MenuButton = {
      */
     params?: Values;
 };
+export {};

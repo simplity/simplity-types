@@ -13,6 +13,7 @@ import {
   StringMap,
   Tab,
   TableEditor,
+  TableViewer,
   Tabs,
   Value,
   ValueRenderingDetails,
@@ -245,7 +246,7 @@ export interface FieldView extends BaseView {
   /**
    * meta data for this button
    */
-  readonly comp: DataField;
+  readonly field: DataField;
 
   /**
    * value is coming from the top.
@@ -286,7 +287,7 @@ export interface ButtonView extends BaseView {
   /**
    * meta data for this button
    */
-  readonly comp: Button;
+  readonly button: Button;
 }
 
 /**
@@ -296,7 +297,7 @@ export interface StaticView extends BaseView {
   /**
    * meta data for this button
    */
-  readonly comp: StaticComp;
+  readonly staticComp: StaticComp;
 }
 
 /**
@@ -304,7 +305,7 @@ export interface StaticView extends BaseView {
  * it is a view component, and not a control, but is named that way for conformity with other similar components
  */
 export interface PanelView extends BaseView {
-  readonly comp: Panel;
+  readonly panel: Panel;
   /**
    * in case this panel is associated with a child-form
    */
@@ -315,7 +316,7 @@ export interface PanelView extends BaseView {
  * Tab is a panel that is a direct child of a tabsGroup.
  */
 export interface TabView extends BaseView {
-  readonly comp: Tab;
+  readonly tab: Tab;
 }
 
 /**
@@ -323,6 +324,7 @@ export interface TabView extends BaseView {
  * It can optionally have the facility to select a subset of rows.
  */
 export interface TableViewerView extends BaseView {
+  readonly table: TableViewer;
   /**
    * remove all rendered rows. Header, if any, is to be retained.
    */
@@ -362,7 +364,7 @@ export interface TableViewerView extends BaseView {
  * It can optionally have the facility to select a subset of rows.
  */
 export interface TableEditorView extends BaseView {
-  readonly comp: TableEditor;
+  readonly table: TableEditor;
 
   /**
    * remove all rendered rows.
@@ -383,7 +385,7 @@ export interface TableEditorView extends BaseView {
  * tab group is the container for tabs
  */
 export interface TabsView extends BaseView {
-  readonly comp: Tabs;
+  readonly tabs: Tabs;
   /**
    * set error status of a all tabs
    * @param errors must be of the right length for he tabs

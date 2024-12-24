@@ -1,4 +1,4 @@
-import { StringMap, BaseComponent, PageAttributes } from '../..';
+import { StringMap, PageAttributes, PageComponent } from '../..';
 /**
  * alterations, enhancements to a generated page.
  * May also be used to customize a page for a specific tenant
@@ -24,5 +24,5 @@ export type ViewComponentAddition = {
      * (false, default, means add it after the component)
      */
     insertBefore?: boolean;
-    comps: BaseComponent[];
+    comps: PageComponent[];
 };
