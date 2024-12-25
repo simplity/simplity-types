@@ -548,10 +548,15 @@ export type ActionType =
  * A piece of work/task that is typically triggered through an event
  */
 export type Action =
+  | CreateAction
+  | DeleteAction
   | FunctionAction
-  | FormAction
-  | ServiceAction
+  | GetAction
   | NavigationAction
+  | FilterAction
+  | SaveAction
+  | ServiceAction
+  | UpdateAction
   | ViewAction;
 /**
  * action that requires specific programming logic. This is implemented as a function in the app
@@ -570,19 +575,20 @@ export type FunctionAction = BaseAction & {
  */
 export type FormAction = BaseAction & {
   type: 'form';
+  formName: string;
   formOperation: FormOperation;
+  /**
+   * optional. DO NOT specify this if the get is based on key fields. Specify this ONLY IF you want to get data based on other fields
+   * field values to be provided as input to the API to get data.
+   * boolean indicates if the parameter is required/mandatory
+   */
+  params?: StringMap<boolean>;
 };
 /**
  * get data for this form.
  */
 export type GetAction = FormAction & {
   formOperation: 'get';
-  /**
-   * optional. DO NOT specify this if the get is based on key fields. Specify this ONLY IF you want to get dat based on other fields
-   * field values to be provided as input to the API to get data.
-   * boolean indicates if the parameter is required/mandatory
-   */
-  params?: StringMap<boolean>;
 };
 /**
  * create a new row/entity for the form
