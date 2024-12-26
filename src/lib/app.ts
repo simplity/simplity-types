@@ -19,7 +19,7 @@ import { Service } from './runtime/service';
  * The meta data forms the core for server-app and the client-app.
  * This approach avoids duplication of design for client-app and server-app
  */
-export type DesignComponents = CommonOnes & OnlyMeta & MetaAndDesign;
+export type AppDesign = CommonOnes & OnlyMeta & MetaAndDesign;
 
 /**
  * These components form the actual design of the client-app.
@@ -28,7 +28,7 @@ export type DesignComponents = CommonOnes & OnlyMeta & MetaAndDesign;
  * These are all pure meta-data with no logic/program.
  * They are actually JSONs wrapped as TS for ease of type-based editing.
  */
-export type AppDesign = CommonOnes &
+export type ClientDesign = CommonOnes &
   OnlyDesign &
   MetaAndDesign &
   DesignAndRuntime;
@@ -37,7 +37,7 @@ export type AppDesign = CommonOnes &
  * All the components that make-up the runtime for this app.
  * Essentially Design + functions
  */
-export type AppRuntime = CommonOnes & onlyRuntime & DesignAndRuntime;
+export type ClientRuntime = CommonOnes & onlyRuntime & DesignAndRuntime;
 
 /**
  * metadata that is used as part of runtime as well.
@@ -49,6 +49,40 @@ type CommonOnes = {
    * default max length to be used for a text-value-schema with no max specified
    */
   maxLengthForTextField: number;
+
+  /**
+   *  app-specific configuration parameters that may be used by app-specific functions
+   */
+  appParams?: { [key: string]: any };
+
+  /**
+   * simplity agent manages login process, if it is configured at the app level.
+   * this service, if specified, has to conform to the login-specific API
+   */
+  loginServiceName?: string;
+  /**
+   * simplity agent invokes the logout service, but does not expect any response back.
+   */
+  logoutServiceName?: string;
+  /**
+   * URL for the server. All requests are sent to this url.
+   * Only local resources are used if the url is not set
+   */
+  serverUrl?: string;
+  /**
+   * e.g. ./assets/images/
+   */
+  imageBasePath: string;
+
+  /**
+   * layout to render on load
+   */
+  startingLayout: string;
+
+  /**
+   * module to be selected by default on loading
+   */
+  startingModule: string;
 
   /**
    * ready responses are cached responses by serviceNames,  by the client.
@@ -101,39 +135,6 @@ type CommonOnes = {
 type MetaAndDesign = {};
 
 type DesignAndRuntime = {
-  /**
-   *  app-specific configuration parameters that may be used by app-specific functions
-   */
-  appParams?: { [key: string]: any };
-
-  /**
-   * simplity agent manages login process, if it is configured at the app level.
-   * this service, if specified, has to conform to the login-specific API
-   */
-  loginServiceName?: string;
-  /**
-   * simplity agent invokes the logout service, but does not expect any response back.
-   */
-  logoutServiceName?: string;
-  /**
-   * URL for the server. All requests are sent to this url.
-   * Only local resources are used if the url is not set
-   */
-  serverUrl?: string;
-  /**
-   * e.g. ./assets/images/
-   */
-  imageBasePath: string;
-
-  /**
-   * layout to render on load
-   */
-  startingLayout: string;
-
-  /**
-   * module to be selected by default on loading
-   */
-  startingModule: string;
   /**
    * how to get list of name-value pairs for drop-down boxes?
    * run-time list sources are used to generate run-time components
