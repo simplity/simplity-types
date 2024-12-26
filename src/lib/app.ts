@@ -44,6 +44,12 @@ export type AppRuntime = CommonOnes & onlyRuntime & DesignAndRuntime;
  * Obviously, these are part of design as well.
  */
 type CommonOnes = {
+  name: string;
+  /**
+   * default max length to be used for a text-value-schema with no max specified
+   */
+  maxLengthForTextField: number;
+
   /**
    * ready responses are cached responses by serviceNames,  by the client.
    * we may also decide to shift them to the server side on a need basis.
@@ -95,20 +101,11 @@ type CommonOnes = {
 type MetaAndDesign = {};
 
 type DesignAndRuntime = {
-  name: string;
-  version: string;
-  date: string;
-
-  description: string;
   /**
    *  app-specific configuration parameters that may be used by app-specific functions
    */
   appParams?: { [key: string]: any };
 
-  /**
-   * default max length to be used for a text-value-schema with no max specified
-   */
-  maxLengthForTextField: number;
   /**
    * simplity agent manages login process, if it is configured at the app level.
    * this service, if specified, has to conform to the login-specific API
