@@ -1,4 +1,4 @@
-import { AppController, DetailedMessage, FormController, KeyedList, PageController, ServiceResponse, SimpleList, ValueType, VisualWidth } from '..';
+import { AppController, DetailedMessage, FormController, KeyedList, PageController, ServiceResponse, SimpleList, ValueType } from '..';
 /**
  * entity string index
  */
@@ -273,33 +273,30 @@ export type ValueRenderingDetails = {
     valueFormatterFn?: string;
 };
 /**
- * mapping width names with a specific style(s)
+ * 0 implies default or not-applicable depending on the context
  */
-export type WidthStyles = {
-    [key in VisualWidth]?: string;
-};
+export type NbrCols = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 /**
- * child components are laid-out using a grid-bag-layout paradigm.
- * an app MUST specify one default grid-bag-layout, with name as 'default'
+ * -1 means first/last element
  */
-export type GridBagStyle = {
-    /**
-     * 'default' is the name to be used for the style to be used as a default
-     */
-    name: string;
-    /**
-     * style to be used for the parent (this) component
-     */
-    parentStyle?: string;
-    /**
-     * style to be used for a child for which width is not specified
-     */
-    defaultChildStyle: string;
-    /**
-     * width values are to be mapped to the desired style
-     */
-    widthStyles: WidthStyles;
-};
+/**
+ * As of now, our width management is quite primitive.
+ * Page has 12 columns. A leaf element consumes 4 units by default.
+ * That is to say that the leaf elements will be rendered as 3 per row.
+ * A container-child by default will have "full" width, meaning that it will be of the same width as its parent.
+ * Note that the width of a leaf element is always relative to the 12 units at the page level, and not based on its parent's width.
+ *
+ */
+/**
+ * defaults to 'all' for a container, 4 for a leaf.
+ */
+/**
+ * gap on the left. -1 means should start on the next row
+ */
+/**
+ * gap on the right. -1 means next one should start on the next row
+ */
+export type VisualWidth = NbrCols;
 /**
  * field name and sort order
  */

@@ -1,4 +1,4 @@
-import { SimpleList, ValueType } from '../..';
+import { SimpleList, ValueType, VisualWidth } from '../..';
 
 /**
  * Record is an ordered set of data elements
@@ -57,7 +57,17 @@ type BaseRecord = {
    */
   name: string;
 
-  description: string;
+  /**
+   * used at run time for rendering additional details etc..
+   *
+   */
+  description?: string;
+
+  /**
+   * design notes etc.. used for internal purpose. Not visible to the runtime system.
+   * To be used to document design decisions etc...
+   */
+  notes?: string;
   /**
    * If this record represents a table/view in the RDBMS
    */
@@ -230,7 +240,16 @@ export type Field = {
    * id for the message to be flashed in the client if this field fails validation
    */
   messageId?: string;
+
+  /**
+   * visible to the client side as help text etc..
+   */
   description?: string;
+  /**
+   * design notes etc.. used for internal purpose. Not visible to the runtime system.
+   * To be used to document design decisions etc...
+   */
+  notes?: string;
   /**
    * used for validation as well as generating sql script
    */
@@ -340,17 +359,6 @@ export type FormOperation =
   | 'delete'
   | 'filter'
   | 'save';
-
-/**
- * Visual width of a component being rendered
- */
-export type VisualWidth =
-  | 'quiteNarrow'
-  | 'narrow'
-  | 'normal'
-  | 'wide'
-  | 'quiteWide'
-  | 'entireRow';
 
 /**
  * A child form is linked to a parent form in a data-structure
