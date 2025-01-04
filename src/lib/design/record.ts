@@ -369,17 +369,33 @@ export type ChildRecord =
   | TabularChildRecord
   | EditableTabularChildRecord;
 type BaseChild = {
-  linkName: string;
+  /**
+   * name by which this record is added to the main record.
+   * may be different from the child record name
+   */
+  childName: string;
   childRecordName: string;
-  parentLinkFields: string[];
-  childLinkFields: string[];
+  /**
+   * if the child record is linked to the parent with one-to-many relationship.
+   * this array has the names of fields in the parent to be matched for linking
+   */
+  parentLinkFields?: string[];
+  /**
+   * if the child record is linked to the parent with one-to-many relationship.
+   * this array has the names of fields in the child record to be matched for linking
+   */
+  childLinkFields?: string[];
+  /**
+   * panel/group name to be rendered on the view
+   */
   label?: string;
 };
+
 export type SimpleChildRecord = BaseChild & { childType: 'simple' };
 export type EditableChildRecord = BaseChild & {
   childType: 'editable';
   isEditable: true;
-  errorId: string;
+  errorId?: string;
 };
 
 export type TabularChildRecord = BaseChild & {

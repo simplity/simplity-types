@@ -189,6 +189,11 @@ export interface FormController extends DataController {
      */
     getController(name: string): DataController | undefined;
     /**
+     * recursively search for a child-controller with the given form name
+     * @param formName note that this is generally different from the controller name
+     */
+    searchChildController(formName: string): DataController | undefined;
+    /**
      * get a child element of this form
      * @param name unique name of the child in this form
      */

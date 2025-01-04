@@ -482,7 +482,6 @@ export type Tab = Panel & {
 };
 type BaseAction = {
     name: string;
-    type: ActionType;
     /**
      * optional next action to be taken if this action succeeds
      */
@@ -498,13 +497,9 @@ type BaseAction = {
     toDisableUx?: boolean;
 };
 /**
- * valid actionType values
- */
-export type ActionType = 'function' | 'form' | 'service' | 'navigation' | 'view';
-/**
  * A piece of work/task that is typically triggered through an event
  */
-export type Action = CreateAction | DeleteAction | FunctionAction | GetAction | NavigationAction | FilterAction | SaveAction | ServiceAction | UpdateAction | ViewAction;
+export type Action = FilterAction | FormAction | FunctionAction | NavigationAction | ServiceAction | ViewAction;
 /**
  * action that requires specific programming logic. This is implemented as a function in the app
  */
@@ -532,64 +527,18 @@ export type FormAction = BaseAction & {
     params?: StringMap<boolean>;
 };
 /**
- * get data for this form.
- */
-export type GetAction = FormAction & {
-    formOperation: 'get';
-};
-/**
- * create a new row/entity for the form
- */
-export type CreateAction = FormAction & {
-    formOperation: 'create';
-};
-/**
- * modify/update a row/entity for the form
- */
-export type UpdateAction = FormAction & {
-    formOperation: 'update';
-};
-/**
- * modify/update a row/entity for the form
- */
-export type DeleteAction = FormAction & {
-    formOperation: 'delete';
-};
-/**
- * create or update depending on the mode in which this is called.
- * Useful when we can use the same page for create as well s update operation
- */
-export type SaveAction = FormAction & {
-    formOperation: 'save';
-};
-/**
  * change the view related attribute of a component
  */
 export type ViewAction = BaseAction & {
-    actionType: 'view';
+    type: 'view';
     compName: string;
     attribute: string;
     value: unknown;
 };
-/**
- * show or hide a component
- */
-export type ShowAction = ViewAction & {
-    attribute: 'show';
-    value: boolean;
-};
-/**
- * enable or disable a component
- */
-export type EnableAction = ViewAction & {
-    attribute: 'enable';
-    value: boolean;
-};
-/**
- * get data rows fora form
- */
-export type FilterAction = FormAction & {
+export type FilterAction = BaseAction & {
+    type: 'form';
     formOperation: 'filter';
+    formName: string;
     /**
      * name of the child-form (not the form name associated with that child)
      */
@@ -630,17 +579,21 @@ export type ServiceAction = BaseAction & {
     type: 'service';
     serviceName: string;
     /**
-     * If the payload is to be prepared based on the form.
-     * If true, the form is validated first.
-     * Action is aborted after showing the messages if the form is invalid.
+     * set this to true If the payload is to be prepared based on all the data elements on this page.
+     * If a the page is associated with a form, then that form is used as the basis, including the sub-forms if any.
+     * Else it is based on all the fields and tables rendered in the page.
+     * Data is validated first. Action is taken only if validations go through.
      */
-    submitForm?: boolean;
+    submitAllData?: boolean;
     /**
-     * ignored if submitForm=true.
+     * specify the specific sub-form to be used to prepare the payload.
+     * Ensure that submitAllData is unset or false for this option to be used.
+     */
+    panelToSubmit?: string;
+    /**
      * If the payload is to be prepared using selected field/table names.
      * Use the boolean value to indicate if the value for the field/table is required.
      * If a required value is not found, an error message is raised at run time, and the service is not requested.
-     *
      */
     params?: StringMap<boolean>;
     /**
@@ -660,7 +613,7 @@ export type ServiceAction = BaseAction & {
      * when a service returns, the payload is assumed to be meant for the entire page.
      * This means the data for the page is first reset, and only the data received is set to all the page elements.
      */
-    targetChildName?: string;
+    targetPanelName?: string;
 };
 /**
  * event triggered to navigate to a page or a module

@@ -39,7 +39,7 @@ export type ServiceRequestOptions = {
    * it is to be noted that the response may contain the the tabular data with a generic name "list"
    * that is, the response could be {list:[....]} or {childNAme: [....]}
    */
-  targetChildName?: string;
+  targetPanelName?: string;
 
   /**
    * arrow function to be called back with the response.

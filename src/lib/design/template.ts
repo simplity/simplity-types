@@ -1,6 +1,6 @@
 import {
   FilterCondition,
-  FilterRequestVo,
+  FilterParameters,
   MenuButton,
   SortBy,
   StringMap,
@@ -57,6 +57,12 @@ export type PageTemplate = {
    * boolean is true if value is required for the field. false if the field value is optional
    */
   additionalInputParams?: StringMap<boolean>;
+
+  /**
+   * by default, buttons are rendered at the bottom.
+   * However, like in a list-page, it may make more sense to render them at the top
+   */
+  renderButtonsBeforeData?: boolean;
 };
 
 /**
@@ -118,7 +124,7 @@ export type ListPage = PageTemplate & {
    * specify the filter conditions for each field.
    */
 
-  filterParams?: FilterRequestVo;
+  filterParams?: FilterParameters;
   /**
    * should the user be allowed to configure how the list is rendered for him/her
    */
@@ -146,7 +152,7 @@ export type GridPage = PageTemplate & {
    * specify the filter conditions for each field.
    * Page will render these fields for the user to enter values
    */
-  filterParams?: FilterRequestVo;
+  filterParams?: FilterParameters;
 };
 
 export type GridColumn = {
@@ -222,5 +228,5 @@ export type MasterPage = PageTemplate & {
    * fields to be rendered for the user to enter values based on which the rows are to be listed
    * note that these fields must be from the same form/record
    */
-  filterParams?: FilterRequestVo;
+  filterParams?: FilterParameters;
 };
