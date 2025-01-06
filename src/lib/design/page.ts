@@ -349,7 +349,7 @@ export type StaticComp = BaseComponent & {
 };
 export type StaticCompType = 'image' | 'content' | 'line' | 'custom';
 /**
- * Data table that renders from tabular data (rows and columns) in read-nly mode
+ * Data table that renders tabular data (rows and columns) in readonly mode
  * There may be a feature to select rows, but the data itself is not editable
  * there are three ways to specify how the columns are to rendered.
  * 1. default is "dynamic". The table is rendered based on run-time tabular data.

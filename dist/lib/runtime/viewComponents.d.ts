@@ -1,4 +1,4 @@
-import { Alert, BaseComponent, Button, DataField, FormController, LeafComponent, NavigationAction, Page, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, Tabs, Value, ValueRenderingDetails, Values } from '../..';
+import { Alert, BaseComponent, Button, DataField, FormController, NavigationAction, Page, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, Tabs, Value, Values } from '../..';
 /**
  * An App-view is the outer most container component inside of which the relevant view components are laid out
  * When an AppView instance is created, it should not have any child layouts in that.
@@ -241,30 +241,11 @@ export interface TableViewerView extends BaseView {
      */
     reset(): void;
     /**
-     * simplest way to render a tabular data, with no formatting options.
-     * To be used for ad-hoc run-time data for which no pre-designed formatting can be applied
-     * First row is scanned to get all the possible columns.
-     * Name of the field itself is used as the label.
-     * Number fields are rendered as right-aligned, while other are rendered as left-aligned
+     * render required rows for the incoming data-rows.
      * @param data
+     * @param selectedNames if this is a configurable table, then this is required
      */
-    showData(data: Values[]): void;
-    /**
-     * render tabular data as output text with formatting/rendering
-     * @param data
-     * @param rendering columns are rendered based on these elements.
-     * If a column is missing in the row-data, an empty string is assumed.
-     * Any data element with no rendering is ignored
-     */
-    renderData(data: Values[], rendering: ValueRenderingDetails[]): void;
-    /**
-     * Render the data with maximum rendering/formatting options.
-     * Columns are full-fledged leaf-components.
-     * @param data rows of data to be rendered
-     * @param columns child nodes to be rendered as columns.
-     * Input fields, if any, will be rendered as disabled.
-     */
-    renderChildren(data: Values[], columns: LeafComponent[] | undefined): void;
+    renderData(data: Values[], selectedNames?: string[]): void;
 }
 /**
  * table renders tabular data, but does not allow any edits to the columns.
