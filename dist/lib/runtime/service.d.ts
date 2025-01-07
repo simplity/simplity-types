@@ -23,7 +23,7 @@ export type ListRequestVo = {
 /**
  * input parameters to the filter API
  */
-export type FilterRequestVo = {
+export type FilterParams = {
     /**
      * default is to get all rows.
      * Note that there is a default max rows that any service will respond back with.

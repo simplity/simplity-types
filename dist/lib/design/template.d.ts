@@ -1,4 +1,4 @@
-import { FilterCondition, FilterParameters, MenuButton, SortBy, StringMap } from '../..';
+import { FilterCondition, FilterFields, MenuButton, SortBy, StringMap } from '../..';
 /**
  * template for a simple master that creates three pages:
  * 1. masterList : list of all rows. Each row has view and edit buttons.
@@ -101,7 +101,7 @@ export type ListPage = PageTemplate & {
      * if the list is to be filtered based on the values of some of the fields.
      * specify the filter conditions for each field.
      */
-    filterParams?: FilterParameters;
+    filterFields?: FilterFields;
     /**
      * should the user be allowed to configure how the list is rendered for him/her
      */
@@ -126,7 +126,7 @@ export type GridPage = PageTemplate & {
      * specify the filter conditions for each field.
      * Page will render these fields for the user to enter values
      */
-    filterParams?: FilterParameters;
+    filterFields?: FilterFields;
 };
 export type GridColumn = {
     name: string;
@@ -206,5 +206,5 @@ export type MasterPage = PageTemplate & {
      * fields to be rendered for the user to enter values based on which the rows are to be listed
      * note that these fields must be from the same form/record
      */
-    filterParams?: FilterParameters;
+    filterFields?: FilterFields;
 };

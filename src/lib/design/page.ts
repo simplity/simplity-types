@@ -592,7 +592,7 @@ export type FilterAction = BaseAction & {
   /**
    * fields and the conditions based on which the rows for the child are fetched
    */
-  filterParams?: FilterParameters;
+  filterFields?: FilterFields;
   /**
    * sorting of rows based on fields
    */
@@ -606,7 +606,7 @@ export type FilterAction = BaseAction & {
  * At run time, the data controller is queried for dat for field (and toField if required) to get the values to be compared
  * a condition is going to be like "field1 = 'abcd'" or "field 2 Between 32 and 45"
  */
-export type FilterParameters = {
+export type FilterFields = {
   [field: string]: {
     comparator: Comparator;
     /**

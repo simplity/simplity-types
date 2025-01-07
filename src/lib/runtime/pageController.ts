@@ -13,6 +13,7 @@ import {
   FormOperation,
   FilterCondition,
   SortBy,
+  FilterParams,
 } from '../..';
 
 /**
@@ -207,7 +208,10 @@ export type ReportServiceResponse = {
   list: { variantName: string; settings: ReportSettings }[];
 };
 
-export type ReportSettings = {
+/**
+ * same as filterParams, but all attributes are mandatory
+ */
+export type ReportSettings = FilterParams & {
   maxRows: number;
   fields: string[];
   filters: FilterCondition[];

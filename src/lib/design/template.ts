@@ -1,6 +1,6 @@
 import {
   FilterCondition,
-  FilterParameters,
+  FilterFields,
   MenuButton,
   SortBy,
   StringMap,
@@ -124,7 +124,7 @@ export type ListPage = PageTemplate & {
    * specify the filter conditions for each field.
    */
 
-  filterParams?: FilterParameters;
+  filterFields?: FilterFields;
   /**
    * should the user be allowed to configure how the list is rendered for him/her
    */
@@ -152,7 +152,7 @@ export type GridPage = PageTemplate & {
    * specify the filter conditions for each field.
    * Page will render these fields for the user to enter values
    */
-  filterParams?: FilterParameters;
+  filterFields?: FilterFields;
 };
 
 export type GridColumn = {
@@ -228,5 +228,5 @@ export type MasterPage = PageTemplate & {
    * fields to be rendered for the user to enter values based on which the rows are to be listed
    * note that these fields must be from the same form/record
    */
-  filterParams?: FilterParameters;
+  filterFields?: FilterFields;
 };
