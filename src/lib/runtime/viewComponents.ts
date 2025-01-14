@@ -193,38 +193,26 @@ export interface PageView {
 export interface BaseView {
   readonly name: string;
   readonly comp: BaseComponent;
+
   /**
-   * modify the way the view is rendered by changing its view-attribute.
-   * ignored with a warning if the setting is not relevant for the control
-   * @param settings name-value pairs for valid attribute names
+   * set/reset an error message with this view-component. this
+   *
+   * @param error undefined means reset/remove any existing error message
    */
-  setDisplay(settings: DisplaySettings): void;
+  setError(error: string | undefined): void;
+
+  /**
+   * A view-component may have certain display-states, like hidden etc..
+   * To keep the concerns separated, view component should delegate the actual rendering to its rendering layer
+   * for example, in HTML this would be with a style="display:none".
+   * however, the view component MUST not do this. Instead it should delegate the how part.
+   * thi can be done by setting a custom attribute like "data-hidden"
+   *
+   * @param name could be defined by  simplity, or a custom one implemented by the specific app
+   * @param value appropriate value for this state
+   */
+  setDisplayState(name: string, value: string | number | boolean): void;
 }
-
-export type KnownDisplaySettings = 'hidden' | 'disabled' | 'classes' | 'error';
-/**
- * attributes that can be set programmatically at run time
- */
-export type DisplaySettings = KnownSettings & { [key: string]: any };
-/**
- * attributes that can be set programmatically at run time
- */
-type KnownSettings = {
-  /**
-   * default, false, is to render the control
-   */
-  hidden?: boolean;
-  /**
-   * default, false, is to enable the field
-   */
-  disabled?: boolean;
-
-  /**
-   * IMPORTANT: must be checked for !== undefined because '' has a different meaning than not setting it
-   * set to '' to mark that this field is not in error.
-   */
-  error?: string;
-};
 
 /**
  * controls that do not contain other controls

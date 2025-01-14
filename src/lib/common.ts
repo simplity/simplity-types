@@ -315,39 +315,7 @@ export type ValueRenderingDetails = {
   valueFormatterFn?: string;
 };
 
-/**
- * 0 implies default or not-applicable depending on the context
- */
-export type NbrCols = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-/**
- * -1 means first/last element
- */
-//type Gap = -1 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
-
-/**
- * As of now, our width management is quite primitive.
- * Page has 12 columns. A leaf element consumes 4 units by default.
- * That is to say that the leaf elements will be rendered as 3 per row.
- * A container-child by default will have "full" width, meaning that it will be of the same width as its parent.
- * Note that the width of a leaf element is always relative to the 12 units at the page level, and not based on its parent's width.
- *
- */
-//export type VisualWidth = {
-/**
- * defaults to 'all' for a container, 4 for a leaf.
- */
-//  width?: NbrCols;
-/**
- * gap on the left. -1 means should start on the next row
- */
-//  gapLeft?: Gap;
-/**
- * gap on the right. -1 means next one should start on the next row
- */
-//  gapRight?: Gap;
-//};
-
-export type VisualWidth = NbrCols;
+export type VisualWidth = number;
 
 /**
  * field name and sort order

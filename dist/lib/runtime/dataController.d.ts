@@ -1,4 +1,4 @@
-import { Value, Vo, PageController, Values, DisplaySettings, FilterCondition, SortBy, Panel, Form, EventDetails, DetailedMessage, StringMap, EventName, TableEditorView, TableViewerView, BaseView } from '../..';
+import { Value, Vo, PageController, Values, FilterCondition, SortBy, Panel, Form, EventDetails, DetailedMessage, StringMap, EventName, TableEditorView, TableViewerView, BaseView } from '../..';
 /**
  * base interface to be implemented by the form/table controllers
  */
@@ -110,18 +110,20 @@ export interface TableEditorController extends DataController {
      */
     appendRow(values?: Values): number;
     /**
-     * change/set display attributes of all cells in a column
-     * @param names column names
-     * @param settings
+     * set the display state for an entire column
+     * @param columnName column name
+     * @param stateName
+     * @param stateValue appropriate value for the state
      */
-    changeColumnSettings(names: string[], settings: DisplaySettings, rowId?: number): void;
+    setColumnDisplayState(columnName: string, stateName: string, stateValue: string | number | boolean): void;
     /**
-     * change/set display attributes of cells in a a row
-     * @param columnNames
-     * @param settings
+     * set the display state for an entire column
+     * @param columnName column name
+     * @param stateName
+     * @param stateValue appropriate value for the state
      * @param rowId: omitted to apply this to the current row
      */
-    changeCellSettings(columnNames: string[], settings: DisplaySettings, rowId?: number): void;
+    setCellDisplayState(columnName: string, stateName: string, stateValue: string | number | boolean, rowId?: number): void;
     /**
      *
      * @param names
@@ -267,11 +269,12 @@ export interface FormController extends DataController {
      */
     valueIsChanging(fieldName: string, newValue: Value, newValidity?: boolean): void;
     /**
-     * set/change display attributes
-     * @param names
-     * @param settings display settings to be effected
+     * set/change display state of a field
+     * @param fieldName
+     * @param stateName
+     * @param stateValue appropriate value for the state
      */
-    setDisplay(names: string[], settings: DisplaySettings): void;
+    setDisplayState(fieldName: string, stateName: string, stateValue: string | number | boolean): void;
     /**
      * execute an action with this form-controller as the context
      * @param actionName
