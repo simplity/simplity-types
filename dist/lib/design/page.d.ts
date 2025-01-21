@@ -9,7 +9,7 @@
  * This is like the .html file that specifies all the attributes of the DOM.
  *
  */
-import { FieldRendering, FormOperation, SortBy, StringMap, VisualWidth, Values, ValueType, Value, BaseView, Markups, ValueRenderingDetails, Comparator, FormController, SimpleList } from '../..';
+import { FieldRendering, FormOperation, SortBy, StringMap, VisualWidth, Values, ValueType, Value, BaseView, Markups, ValueRenderingDetails, Comparator, FormController, SimpleList, OptionalOf } from '../..';
 /**
  * basic attributes of a Page.
  * This type-alias is created to re-use the base attributes for PageAlterations
@@ -189,11 +189,11 @@ export type BaseComponent = {
 /**
  * component type
  */
-export type ComponentType = 'button' | 'field' | 'panel' | 'static' | 'table' | 'tabs';
+export type ComponentType = 'button' | 'buttonPanel' | 'field' | 'referred' | 'panel' | 'static' | 'table' | 'tabs';
 /**
  * a visual component of a page
  */
-export type PageComponent = Button | DataField | Panel | StaticComp | TableViewer | TableEditor | Tabs | Tab;
+export type PageComponent = Button | ButtonPanel | DataField | FieldReference | Panel | StaticComp | TableViewer | TableEditor | Tabs | Tab;
 /**
  * subset of page visual components that just act as containers for their child components
  */
@@ -214,11 +214,7 @@ export type Button = BaseComponent & {
      */
     buttonOptions?: StringMap<unknown>;
 };
-/**
- * Field is a component that is bound to a data-element at run time.
- */
-export type DataField = BaseComponent & {
-    compType: 'field';
+type FieldAttributes = {
     isRequired: boolean;
     valueType: ValueType;
     /**
@@ -286,15 +282,26 @@ export type DataField = BaseComponent & {
     width?: VisualWidth;
 };
 /**
- * panel is a container that contains other components.
- * Contents of a page are organized into its dataPanel at the top.
+ * Simplest way to render a field based on the field defined in the associated record.
+ * Rendering details are taken or inferred from the record.
+ * Feel free to override any of the attributes by explicitly specifying them here.
  */
+export type FieldReference = BaseComponent & {
+    compType: 'referred';
+} & OptionalOf<FieldAttributes>;
+/**
+ * Field is a component that is bound to a data-element at run time.
+ */
+export type DataField = BaseComponent & {
+    compType: 'field';
+} & FieldAttributes;
 export type Panel = BaseComponent & {
     compType: 'panel';
     /**
-     * contents of this panel
+     * default panel is a wrapper of items. It will in turn render the child items, as if they were directly under the parent.
+     * Choose a panel-type defined by the specific app, if this panel has different behavior.
      */
-    children: PageComponent[];
+    panelType?: string;
     /**
      * name of the child-form that defines the data fields in this panel.
      * Important to note that the name of the panel is the name with which ths sub-form is known to the parent-form
@@ -303,6 +310,15 @@ export type Panel = BaseComponent & {
      * The panel hierarchy mimics the form-structure of the underlying data being associated with this page
      */
     childFormName?: string;
+    /**
+     * contents of this panel. Either this is specified, or fieldNames is specified
+     */
+    children?: PageComponent[];
+    /**
+     * render these fields from the relevant form. This is an alternative to specify fields as children.
+     * 'all' is a short cut to use the field names as in the form, in that order.
+     */
+    fieldNames?: 'all' | string[];
 };
 /**
  * any leaf component that is not bound to any data.
@@ -457,6 +473,12 @@ export type TableEditor = BaseComponent & {
      */
     rowsCanBeAdded?: boolean;
 };
+export type ButtonPanel = BaseComponent & {
+    compType: 'buttonPanel';
+    leftButtons?: Button[];
+    middleButtons?: Button[];
+    rightButtons?: Button[];
+};
 export type Tabs = BaseComponent & {
     compType: 'tabs';
     /**
@@ -497,9 +519,17 @@ type BaseAction = {
     toDisableUx?: boolean;
 };
 /**
+ * close this page.
+ *
+ */
+export type CloseAction = BaseAction & {
+    name: string;
+    type: 'close';
+};
+/**
  * A piece of work/task that is typically triggered through an event
  */
-export type Action = FilterAction | FormAction | FunctionAction | NavigationAction | ServiceAction | ViewAction;
+export type Action = CloseAction | FilterAction | FormAction | FunctionAction | NavigationAction | ServiceAction | ViewAction;
 /**
  * action that requires specific programming logic. This is implemented as a function in the app
  */
@@ -617,29 +647,28 @@ export type ServiceAction = BaseAction & {
 };
 /**
  * event triggered to navigate to a page or a module
+ * Note:
+ * One of menuItem, module or layout is mandatory.
  */
 export type NavigationAction = BaseAction & {
     type: 'navigation';
+    /**
+     * where to go. Menu item is always associated with a page.
+     * optional if either layout or module is specified
+     */
+    menuItem?: string;
     /**
      * user is warned and is asked to reconfirm before taking this action, in case the form is modified by the user
      */
     warnIfModified?: boolean;
     /**
-     * defaults to current layout. Specified if the layout needs to be changed
-     * if menu is not specified in this action, then the defaults set at the layout level will be used
+     * defaults to current layout. Specified if the layout needs to be changed, or if menuItem is not specified.
      */
     layout?: string;
     /**
-     * specified if the module is different from the current one
+     * specified if the module is different from the current one, or if menuItem is not specified.
      */
     module?: string;
-    /**
-     * menu name (in turn decides the page to be opened).
-     * not specified if this is a close-operation.
-     * This arrangement allows us to have the same page being opened with different input parameters.
-     * for example subjectSave page is used for both edit and add
-     */
-    menuName?: string;
     /**
      * parameters to be passed to the page associated with the menu item.
      *
@@ -678,7 +707,7 @@ export type MenuButton = {
     /**
      * on click, this menu id is opened. If relevant, key fields of the form associated with the page/panel are sent as parameters
      */
-    menuName: string;
+    menuItem: string;
     /**
      * if icon is used, then the label is used as hint
      */

@@ -42,14 +42,16 @@ export interface PageController {
     readonly ac: AppController;
     readonly fc: FormController;
     /**
-     * called by page-view component after all the view-components are rendered.
+     * called by the view component after the it renders itself, and all its children.
+     * It is possible that the page view is still not attached/appended to its parent view element at this point.
+     * Refer to pageLoaded() for the next event.
+     *
      */
     pageRendered(): void;
     /**
-     * To be called when the view-component is fully loaded,and is ready to take new values
-     *
-     * Angular component needs to call this in a setTimeout() to avoid run-time error
-     * because of change-detection issues.
+     * To be called by the view component after the view is made part of the top-level view component.
+     * Typically this happens after all rendering completes.
+     * This is very similar to document.onLoad() in a paradigm when a new document is created for each page.
      */
     pageLoaded(): void;
     getFormController(): FormController;

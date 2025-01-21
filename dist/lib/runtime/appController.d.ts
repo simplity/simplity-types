@@ -1,4 +1,4 @@
-import { Values, Vo, Layout, MenuItem, Module, Page, Form, NavigationAction, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType } from '../..';
+import { Values, Vo, Layout, MenuItem, Module, Page, Form, NavigationAction, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, PageController, FormController } from '../..';
 /**
  * App controller provides centralized services for all its components
  * This run-time component is built using all the app-components and scripts/functions of the app
@@ -266,4 +266,16 @@ export interface AppController {
      * @returns Promise to get the 0-based index to the choices the user has made. -1 if the user has cancelled the operation
      */
     getUserChoice(text: string, choices: string[]): Promise<number>;
+    /**
+     * Called after a page is loaded. This is invoked on every page load.
+     * The app controller, in turn invokes the globalPageLoadHandler, if such a function is set by the app-runtime
+     * @param pc called aft
+     */
+    pageLoaded(pc: PageController): void;
+    /**
+     * called after a form renders all its fields. Note that the form may not be visible to the user at this point.
+     * The app controller invokes the globalFormRendered function set by the app.
+     * @param fc
+     */
+    formRendered(fc: FormController): void;
 }

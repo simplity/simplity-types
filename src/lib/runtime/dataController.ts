@@ -244,12 +244,6 @@ export interface FormController extends DataController {
    * @param formName note that this is generally different from the controller name
    */
   searchChildController(formName: string): DataController | undefined;
-
-  /**
-   * get a child element of this form
-   * @param name unique name of the child in this form
-   */
-  getChild(name: string): BaseView | undefined;
   /**
    * ensures that the supplied action is triggered when the event is fired by the specified node
    * @param nodeName on which to listen to for the event
@@ -300,11 +294,17 @@ export interface FormController extends DataController {
   getFieldValue(fieldName: string): Value | undefined;
 
   /**
+   * get all the child views of this form.
+   * @returns  all the child views of this form
+   */
+  getChildren(): StringMap<BaseView>;
+
+  /**
    * get a view that is managed by this controller.
    * @param name to be retrieved.
    * @returns  undefined if no child with this name exists for this controller
    */
-  getChildView(name: string): BaseView | undefined;
+  getChild(name: string): BaseView | undefined;
 
   /**
    * A page keeps a status to know if the user has modified any data.

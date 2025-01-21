@@ -185,6 +185,12 @@ export interface PageView {
    * Typically used during page loads/updates
    */
   enableUx(): void;
+
+  /**
+   * invoked after this page view is integrated with the layout.
+   * e.g. in html, this is called after the view is appended to the DOM.
+   */
+  pageLoaded(): void;
 }
 
 /**

@@ -5,6 +5,9 @@ import { AppController, DetailedMessage, FormController, KeyedList, PageControll
 export type StringMap<T> = {
     [name: string]: T;
 };
+export type OptionalOf<T> = {
+    [K in keyof T]?: T[K];
+};
 /**
  * Technique to incorporate condition like (one of a,b, or c must be specified)
  */

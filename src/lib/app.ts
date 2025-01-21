@@ -37,7 +37,7 @@ export type ClientDesign = CommonOnes &
  * All the components that make-up the runtime for this app.
  * Essentially Design + functions
  */
-export type ClientRuntime = CommonOnes & onlyRuntime & DesignAndRuntime;
+export type ClientRuntime = CommonOnes & OnlyRuntime & DesignAndRuntime;
 
 /**
  * metadata that is used as part of runtime as well.
@@ -125,6 +125,21 @@ type CommonOnes = {
    * all the html source/text for the view components
    */
   htmls?: StringMap<string>;
+
+  /**
+   * Name of the function to be invoked after every page load.
+   * This is a common function that is called whenever any page is loaded.
+   * Any fy=unction specific to a given page must be set as onLoadAction of that specific page.
+   * This hook is provided to any initialization kind of function for any utilities being used.
+   */
+  onPageLoadAction?: string;
+
+  /**
+   * name of the function to be invoked after every form-render completes.
+   * This is a common function after a form renders all its children, but the page may not have rendered/loaded
+   * This is designed for any common initialization of form-field-components, like date-picker etc..
+   */
+  onFormRenderAction?: string;
 };
 
 /**
@@ -203,7 +218,7 @@ type OnlyMeta = {
  */
 type OnlyDesign = {};
 
-type onlyRuntime = {
+type OnlyRuntime = {
   /**
    * local lists are cached responses to getList(). Useful during development/demo
    * this is a run-time concept to override a design component at run time
