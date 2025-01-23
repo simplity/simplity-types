@@ -61,14 +61,26 @@ export interface DataController {
 
 export interface TableViewerController extends DataController {
   readonly type: 'table';
+  /**
+   * get the data for this table
+   */
   getData(): Vo[];
+
+  /**
+   * return the data associated with the specified row.
+   *
+   * @param rowIdx optional. defaults to current row.
+   * @returns undefined if there is no data with the specified row index
+   */
+  getRowData(rowIdx?: number): Vo | undefined;
+
   /**
    * user has clicked on a row.
    * this event is NOT triggered if the table has any clickable column.
    * 0-based index of the row in the data-array
-   * @param roIdx
+   * @param rowIdx
    */
-  rowClicked(roIdx: number): void;
+  rowClicked(rowIdx: number): void;
   /**
    * show only rows with the searched text. This is case-insensitive
    *
