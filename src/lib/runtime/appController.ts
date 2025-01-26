@@ -6,7 +6,6 @@ import {
   Module,
   Page,
   Form,
-  NavigationAction,
   PanelView,
   ServiceResponse,
   StringMap,
@@ -17,6 +16,7 @@ import {
   ValueType,
   PageController,
   FormController,
+  NavigationOptions,
 } from '../..';
 
 /**
@@ -292,11 +292,18 @@ export interface AppController {
 
   /////// UX related
   /**
-   * navigate to a page based on layout/module/menu
+   * navigate to a page based on layout/module/menu.
+   * This is initiated from the controller side
    * @param page to navigate to
    */
-  navigate(action: NavigationAction): void;
+  navigate(options: NavigationOptions): void;
 
+  /**
+   * user has selected a menu item. This comes from the view-side (not the controller side);
+   * @param module a menu item can be part of more than modules,
+   * @param menuItem
+   */
+  menuSelected(module: string, menuItem: string): void;
   /**
    * open a new window for an external URL
    */

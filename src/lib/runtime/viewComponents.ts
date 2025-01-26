@@ -4,7 +4,6 @@ import {
   Button,
   DataField,
   FormController,
-  NavigationAction,
   Page,
   Panel,
   SimpleList,
@@ -66,16 +65,10 @@ export interface AppView {
   closePopup(): void;
 
   /**
-   * render this page. It should first create an instance of the PageView, create a PageController using app.newPc() and then render the page contents
-   * @param pageName
-   */
-  renderPage(pageName: string, pageParams?: Values): void;
-
-  /**
    * navigate to the desired page based on the details in this action
-   * @param action page and other details
+   * @param options page and other details
    */
-  navigate(action: NavigationAction): void;
+  navigate(options: NavigationOptions): void;
   /**
    * It is possible that a layout shows the page title outside of the page area.
    * this method is to be called to set the title. Note that this is NOT the title of the window
@@ -90,11 +83,36 @@ export interface AppView {
   renderContextValues(values: StringMap<string>): void;
 }
 
-export type NavigationParams = {
+export type NavigationOptions = {
+  /**
+   * if this is true, other parameters have no meaning.
+   */
+  closePage?: boolean;
+  /**
+   * defaults to current
+   */
   layout?: string;
+  /**
+   * defaults to default in the new layout, or the current module if layout is not changed
+   */
   module?: string;
+  /**
+   * default from the module if this is omitted
+   */
   menuItem?: string;
   params?: Values;
+  /**
+   * if true, then the current page is not deleted, and saved on a stack
+   */
+  retainCurrentPage?: boolean;
+  /**
+   * new page is rendered as modal on the current page.
+   */
+  asModal?: boolean;
+  /**
+   * whether existing pages on the stack are to be deleted
+   */
+  purgePageStack?: boolean;
 };
 /**
  * this is typically the only child of an AppView that would render all other components in a pre-defined layout.

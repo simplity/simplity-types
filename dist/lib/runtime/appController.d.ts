@@ -1,4 +1,4 @@
-import { Values, Vo, Layout, MenuItem, Module, Page, Form, NavigationAction, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, PageController, FormController } from '../..';
+import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, PageController, FormController, NavigationOptions } from '../..';
 /**
  * App controller provides centralized services for all its components
  * This run-time component is built using all the app-components and scripts/functions of the app
@@ -223,10 +223,17 @@ export interface AppController {
      */
     setAccessControls(ids: string): void;
     /**
-     * navigate to a page based on layout/module/menu
+     * navigate to a page based on layout/module/menu.
+     * This is initiated from the controller side
      * @param page to navigate to
      */
-    navigate(action: NavigationAction): void;
+    navigate(options: NavigationOptions): void;
+    /**
+     * user has selected a menu item. This comes from the view-side (not the controller side);
+     * @param module a menu item can be part of more than modules,
+     * @param menuItem
+     */
+    menuSelected(module: string, menuItem: string): void;
     /**
      * open a new window for an external URL
      */
