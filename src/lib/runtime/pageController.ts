@@ -1,7 +1,6 @@
 import {
   AppController,
   Vo,
-  Alert,
   FnStatus,
   DetailedMessage,
   AnyValue,
@@ -102,26 +101,6 @@ export interface PageController {
    * is this page valid?
    */
   isValid(): boolean;
-
-  /**
-   * show alerts to the user
-   * @param alerts
-   */
-  showAlerts(alerts: Alert[]): void;
-
-  /**
-   * Render the messages
-   * @param messages
-   */
-  showMessages(messages: DetailedMessage[]): void;
-  /**
-   * remove the mask on the page
-   */
-  enableUx(): void;
-  /**
-   * put a mask on the page to avoid any action by the user
-   */
-  disableUx(): void;
 
   /**
    * arrange to get value list for this control as data for its drop-down,

@@ -1,4 +1,4 @@
-import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, PageController, FormController, NavigationOptions } from '../..';
+import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, PageController, FormController, NavigationOptions, Alert } from '../..';
 /**
  * App controller provides centralized services for all its components
  * This run-time component is built using all the app-components and scripts/functions of the app
@@ -156,9 +156,10 @@ export interface AppController {
      *
      * @param serviceName name of the service to be requested
      * @param data optional input data that accompanies the request.
+     * @param toDisableUx if true, page is disabled for user interaction till teh service returns
      * @returns promise that can get the response for this service request
      */
-    serve(serviceName: string, data?: Vo): Promise<ServiceResponse>;
+    serve(serviceName: string, data?: Vo, toDisableUx?: boolean): Promise<ServiceResponse>;
     /**
      * download the response from a service
      * @param fileName
@@ -273,6 +274,21 @@ export interface AppController {
      * @returns Promise to get the 0-based index to the choices the user has made. -1 if the user has cancelled the operation
      */
     getUserChoice(text: string, choices: string[]): Promise<number>;
+    /**
+     * disable user interaction.
+     * Typically used during page loads/updates
+     */
+    disableUx(): void;
+    /**
+     * enable user interaction.
+     * Typically used during page loads/updates
+     */
+    enableUx(): void;
+    /**
+     * show messages as per the chosen design to show/flash message in a non-intrusive way
+     * @param alerts
+     */
+    showAlerts(alerts: Alert[]): void;
     /**
      * Called after a page is loaded. This is invoked on every page load.
      * The app controller, in turn invokes the globalPageLoadHandler, if such a function is set by the app-runtime

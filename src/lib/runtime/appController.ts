@@ -17,6 +17,7 @@ import {
   PageController,
   FormController,
   NavigationOptions,
+  Alert,
 } from '../..';
 
 /**
@@ -202,9 +203,14 @@ export interface AppController {
    *
    * @param serviceName name of the service to be requested
    * @param data optional input data that accompanies the request.
+   * @param toDisableUx if true, page is disabled for user interaction till teh service returns
    * @returns promise that can get the response for this service request
    */
-  serve(serviceName: string, data?: Vo): Promise<ServiceResponse>;
+  serve(
+    serviceName: string,
+    data?: Vo,
+    toDisableUx?: boolean
+  ): Promise<ServiceResponse>;
 
   /**
    * download the response from a service
@@ -349,6 +355,24 @@ export interface AppController {
    * @returns Promise to get the 0-based index to the choices the user has made. -1 if the user has cancelled the operation
    */
   getUserChoice(text: string, choices: string[]): Promise<number>;
+
+  /**
+   * disable user interaction.
+   * Typically used during page loads/updates
+   */
+  disableUx(): void;
+
+  /**
+   * enable user interaction.
+   * Typically used during page loads/updates
+   */
+  enableUx(): void;
+
+  /**
+   * show messages as per the chosen design to show/flash message in a non-intrusive way
+   * @param alerts
+   */
+  showAlerts(alerts: Alert[]): void;
 
   /**
    * Called after a page is loaded. This is invoked on every page load.

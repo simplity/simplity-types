@@ -16,10 +16,20 @@ export interface AppView {
      *
      */
     /**
-     * show a message as per the chosen design to show/flash message in a non-intrusive way
-     * @param alert
+     * disable user interaction.
+     * Typically used during page loads/updates
      */
-    showAlert(alert: Alert): void;
+    disableUx(): void;
+    /**
+     * enable user interaction.
+     * Typically used during page loads/updates
+     */
+    enableUx(): void;
+    /**
+     * show messages as per the chosen design to show/flash message in a non-intrusive way
+     * @param alerts
+     */
+    showAlerts(alerts: Alert[]): void;
     /**
      * Show a message/question to get user's response/choice
      * @param text message text to be shown
@@ -119,21 +129,6 @@ export interface PageView {
      * @returns
      */
     showButtons(toShow: boolean): void;
-    /**
-     * show alerts
-     * @param alerts
-     */
-    alert(alerts: Alert[]): void;
-    /**
-     * disable user interaction.
-     * Typically used during page loads/updates
-     */
-    disableUx(): void;
-    /**
-     * enable user interaction.
-     * Typically used during page loads/updates
-     */
-    enableUx(): void;
     /**
      * invoked after this page view is integrated with the layout.
      * e.g. in html, this is called after the view is appended to the DOM.
