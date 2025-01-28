@@ -96,7 +96,7 @@ export type NavigationOptions = {
     /**
      * whether existing pages on the stack are to be deleted
      */
-    purgePageStack?: boolean;
+    erasePagesOnTheStack?: boolean;
 };
 /**
  * this is typically the only child of an AppView that would render all other components in a pre-defined layout.

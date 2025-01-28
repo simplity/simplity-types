@@ -685,7 +685,7 @@ export type NavigationAction = BaseAction & {
     /**
      * relevant if retainCurrentPage=true. new page is opened as modal on the current page
      */
-    openAsModal?: boolean;
+    asModal?: boolean;
     /**
      * relevant if retainCurrentPage = true. action to be taken when this page is un-hidden/activated again.
      */
