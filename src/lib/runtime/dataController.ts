@@ -24,6 +24,14 @@ export interface DataController {
   readonly pc: PageController;
   readonly type: 'form' | 'table' | 'grid';
   /**
+   * set/change display state of a field
+   * @param compName field/component name
+   * @param settings name-value pairs of setting values
+   *
+   * @returns true if the comp exists in this controller, false otherwise
+   */
+  setDisplayState(compName: string, settings: Values): boolean;
+  /**
    * name of the form that defines the fields for the corresponding columns of this table
    */
   getFormName(): string | undefined;
@@ -356,17 +364,6 @@ export interface FormController extends DataController {
 
   //////////////////// methods to change how view components are rendered
 
-  /**
-   * set/change display state of a field
-   * @param fieldName
-   * @param stateName
-   * @param stateValue appropriate value for the state
-   */
-  setDisplayState(
-    fieldName: string,
-    stateName: string,
-    stateValue: string | number | boolean
-  ): void;
   /**
    * execute an action with this form-controller as the context
    * @param actionName

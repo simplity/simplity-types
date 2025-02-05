@@ -13,6 +13,7 @@ import {
   FilterCondition,
   SortBy,
   FilterParams,
+  Values,
 } from '../..';
 
 /**
@@ -180,6 +181,14 @@ export interface PageController {
     params: unknown,
     msgs?: DetailedMessage[]
   ): FnStatus;
+
+  /**
+   * set/change display state of a component
+   * @param compName field/component name
+   * @param settings name-value pairs of setting values
+   *
+   */
+  setDisplayState(compName: string, settings: Values): void;
 }
 
 /**

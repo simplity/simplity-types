@@ -1,4 +1,4 @@
-import { Alert, BaseComponent, Button, DataField, FormController, Page, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, Tabs, Value, Values } from '../..';
+import { Alert, AppController, BaseComponent, Button, DataField, FormController, Page, PageController, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, Tabs, Value, Values } from '../..';
 /**
  * An App-view is the outer most container component inside of which the relevant view components are laid out
  * When an AppView instance is created, it should not have any child layouts in that.
@@ -141,6 +141,8 @@ export interface PageView {
 export interface BaseView {
     readonly name: string;
     readonly comp: BaseComponent;
+    readonly ac: AppController;
+    readonly pc: PageController;
     /**
      * set/reset an error message with this view-component. this
      *
@@ -151,13 +153,12 @@ export interface BaseView {
      * A view-component may have certain display-states, like hidden etc..
      * To keep the concerns separated, view component should delegate the actual rendering to its rendering layer
      * for example, in HTML this would be with a style="display:none".
-     * however, the view component MUST not do this. Instead it should delegate the how part.
+     * however, the view component MUST not do this. Instead it should delegate the "how" part to the last mile component
      * thi can be done by setting a custom attribute like "data-hidden"
      *
-     * @param name could be defined by  simplity, or a custom one implemented by the specific app
-     * @param value appropriate value for this state
+     * @param settings name-value pairs of setting values
      */
-    setDisplayState(name: string, value: string | number | boolean): void;
+    setDisplayState(settings: Values): void;
 }
 /**
  * controls that do not contain other controls

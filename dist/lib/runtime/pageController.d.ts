@@ -1,4 +1,4 @@
-import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy, FilterParams } from '../..';
+import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy, FilterParams, Values } from '../..';
 /**
  * options for a service request
  */
@@ -141,6 +141,13 @@ export interface PageController {
      * @returns status of function call.
      */
     callFunction(nam: string, params: unknown, msgs?: DetailedMessage[]): FnStatus;
+    /**
+     * set/change display state of a component
+     * @param compName field/component name
+     * @param settings name-value pairs of setting values
+     *
+     */
+    setDisplayState(compName: string, settings: Values): void;
 }
 /**
  * VO as response from getReportSettings service

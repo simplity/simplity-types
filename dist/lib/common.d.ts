@@ -1,4 +1,4 @@
-import { AppController, DetailedMessage, FormController, KeyedList, PageController, ServiceResponse, SimpleList, ValueType } from '..';
+import { AppController, BaseView, DetailedMessage, FormController, KeyedList, PageController, ServiceResponse, SimpleList, ValueType } from '..';
 /**
  * entity string index
  */
@@ -16,10 +16,6 @@ export type OneOf<T> = {
         [P in K]: T[K];
     } & Partial<Record<Exclude<keyof T, K>, never>>;
 }[keyof T];
-/**
- * function type. type alias "FunctionDetails" defines the signature of each of these types
- */
-export type FunctionType = 'global' | 'page' | 'form' | 'value' | 'request' | 'response' | 'format';
 /**
  * A global function that is accessible at the app level.
  *
@@ -82,6 +78,13 @@ export type FormatterFunction = (value: Value, row: Values) => {
     value: string;
     markups: Markups;
 };
+/**
+ * function to be called to initialize a view-component after it is created by the view-layer of simplity.
+ * e.g. in html, if faltpickr is used, the inputElement must be initialized.
+ * @param view  abstract base-view. implementation should cast it to the rendering-specific element
+ * for e.g. in html this is BaseElement.
+ */
+export type ViewInitFunction = (view: BaseView) => void;
 export type FunctionDetails = {
     type: 'global';
     fn: GlobalFunction;
@@ -103,7 +106,14 @@ export type FunctionDetails = {
 } | {
     type: 'format';
     fn: FormatterFunction;
+} | {
+    type: 'init';
+    fn: ViewInitFunction;
 };
+/**
+ * function type. type alias "FunctionDetails" defines the signature of each of these types
+ */
+export type FunctionType = FunctionDetails['type'];
 /**
  * status returned by the controller when a function is requested at run time
  */

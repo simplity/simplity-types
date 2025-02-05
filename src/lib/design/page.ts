@@ -201,6 +201,10 @@ export type BaseComponent = {
    * this is the name of the html file, that has the actual htmls
    */
   customHtml?: string;
+  /**
+   * initial display state. e.g. {hidden: true}
+   */
+  displayStates?: StringMap<Value>;
 };
 /**
  * component type
@@ -222,7 +226,7 @@ export type PageComponent =
   | Button
   | ButtonPanel
   | DataField
-  | FieldReference
+  | ReferredField
   | Panel
   | StaticComp
   | TableViewer
@@ -235,18 +239,18 @@ export type PageComponent =
  */
 export type ContainerComponent = Panel | Tabs | Tab;
 
-export type LeafComponent = DataField | Button | StaticComp;
+export type LeafComponent = DataField | Button | StaticComp | ReferredField;
 
 /**
  * meta data for a button
  */
 export type Button = BaseComponent & {
   compType: 'button';
-  buttonType: 'primary' | 'secondary' | 'navigation' | 'custom';
+  buttonType: 'primary' | 'secondary' | 'navigation' | 'custom' | 'submit';
   label?: string;
   icon?: string;
   tooltip?: string;
-  enableWhen?: 'error' | 'valid' | 'rowsSelected';
+  enableWhen?: 'error' | 'valid' | 'rowsSelected' | 'dirty';
   /**
    * additional parameters specific to this button
    */
@@ -325,7 +329,7 @@ type FieldAttributes = {
  * Rendering details are taken or inferred from the record.
  * Feel free to override any of the attributes by explicitly specifying them here.
  */
-export type FieldReference = BaseComponent & {
+export type ReferredField = BaseComponent & {
   compType: 'referred';
 } & OptionalOf<FieldAttributes>;
 
@@ -587,7 +591,7 @@ export type Action =
   | FunctionAction
   | NavigationAction
   | ServiceAction
-  | ViewAction;
+  | DisplayAction;
 /**
  * action that requires specific programming logic. This is implemented as a function in the app
  */
@@ -618,11 +622,17 @@ export type FormAction = BaseAction & {
 /**
  * change the view related attribute of a component
  */
-export type ViewAction = BaseAction & {
-  type: 'view';
-  compName: string;
-  attribute: string;
-  value: unknown;
+export type DisplayAction = BaseAction & {
+  type: 'display';
+  /**
+   * display settings for components
+   * e.g {
+   *    comp1: {hidden: true},
+   *    comp2: {hidden: false},
+   *    field1: {disabled: false, invalid: true}
+   * }
+   */
+  displaySettings: { [compName: string]: { [attribute: string]: Value } };
 };
 
 export type FilterAction = BaseAction & {
