@@ -1,4 +1,4 @@
-import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy, FilterParams, Values } from '../..';
+import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy, FilterParams, Values, StringMap } from '../..';
 /**
  * options for a service request
  */
@@ -96,19 +96,19 @@ export interface PageController {
      */
     requestService(serviceName: string, options?: ServiceRequestOptions): void;
     /**
+     * ths is used by run-time code with an action created at run time, rather than an action that was known at design-time
+     * @param action
+     * @param fc undefined if this action is not associated with a specific data controller
+     * @param params depends on the type of action and the context.
+     */
+    act(actionName: string, fc?: FormController, params?: StringMap<any>): void;
+    /**
      * execute an action with form-data/form-controller as the context
      * @param actionName
      * @param fc undefined if this action is not associated with a specific data controller
      * @param params depends on the type of action and the context.
      */
-    act(actionName: string, fc?: FormController, params?: unknown): void;
-    /**
-     * add an action at run time. To be used only if a design-time solution using page.ts is not viable
-     * this also be used, in very special case, where a design-time action needs to be superseded.
-     * Note that the design-time components should never be mutated at run time.
-     * @param action
-     */
-    addAction(action: Action): void;
+    takeAction(action: Action, fc?: FormController, params?: StringMap<any>): void;
     /**
      * feature to add drop-down list at run time as a local list. (not going to the server)
      * e.g. the field-list in list-configuration panel
@@ -140,7 +140,7 @@ export interface PageController {
      * @param msgs array of messages to which messages could be added while locating and executing the function
      * @returns status of function call.
      */
-    callFunction(nam: string, params: unknown, msgs?: DetailedMessage[]): FnStatus;
+    callFunction(nam: string, params?: StringMap<any>, msgs?: DetailedMessage[]): FnStatus;
     /**
      * set/change display state of a component
      * @param compName field/component name

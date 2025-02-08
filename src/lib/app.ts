@@ -53,7 +53,7 @@ type CommonOnes = {
   /**
    *  app-specific configuration parameters that may be used by app-specific functions
    */
-  appParams?: { [key: string]: any };
+  appParams?: StringMap<any>;
 
   /**
    * simplity agent manages login process, if it is configured at the app level.

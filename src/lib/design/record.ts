@@ -1,4 +1,4 @@
-import { SimpleList, ValueType, VisualWidth } from '../..';
+import { RecordFieldAndDataField } from '../common';
 
 /**
  * Record is an ordered set of data elements
@@ -165,7 +165,7 @@ export type CompositeRecord = BaseRecord & {
   childRecords: ChildRecord[];
 };
 
-export type Field = {
+export type Field = RecordFieldAndDataField & {
   /**
    * name is to be unique within a record
    */
@@ -176,148 +176,23 @@ export type Field = {
    */
   fieldType: FieldType;
   /**
-   * value type 'boolean' 'text' 'integer' etc..
-   */
-  valueType: ValueType;
-
-  /**
-   * how to validate the value of this field?
-   * optional for fields that are not coming from an external source.
-   * however, it also serves as a good documentation about the expected range of values.
-   * hence it is highly recommended that this is specified.
-   */
-  valueSchema?: string;
-
-  /**
    * required if this is a column in the RDBMS table
    */
   nameInDb?: string;
+  /**
+   * expression that determine how values for this field are generated across rows for demo/tst purposes
+   */
+  demoValue?: string;
+  /**
+   * visible to the client side as help text etc..
+   */
+  description?: string;
+
   /**
    * what should be the type of column in the dbDesign.
    * defaults to the type determined based on the dbTypes specified at the app-level
    */
   dbType?: string;
-  /**
-   * if this field is a drop-down.
-   * to be used only if the list is simple, and is not a common one across several other fields.
-   * also useful if the field is synthesized at run time.
-   */
-  listOptions?: SimpleList;
-
-  /**
-   * if the value is one of a list of enumerated values..
-   * like if the field is country-code, then it may be associated with a pre-defined list named 'countries'
-   */
-  listName?: string;
-  /**
-   * if the list of values is a keyed-list and the key value is to be taken from another field.
-   * Like state-code that would depend on 'country-code'
-   */
-  listKeyFieldName?: string;
-  /**
-   * in case the list is keyed, but this field uses a deign-time fixed value for the key.
-   * e.g. reportField uses a keyed-list named reportFields, and the current field is mean for a reportName="users"
-   * in such a case, listKeyName should not be specified, but listKeyValue="users"
-   */
-  listKeyValue?: string | number;
-  /**
-   * relevant if this field is included in a tabular list
-   */
-  sortable?: boolean;
-  /**
-   * relevant if this field is included in a tabular list
-   */
-  filterable?: boolean;
-  /**
-   * used by the client-side for rendering a tabular list of rows, by default
-   */
-  showInList?: boolean;
-  /**
-   * some fields in a record may be managed programmatically, and are not edited by the end-user
-   */
-  hideInSave?: boolean;
-  /**
-   * id for the message to be flashed in the client if this field fails validation
-   */
-  messageId?: string;
-
-  /**
-   * visible to the client side as help text etc..
-   */
-  description?: string;
-  /**
-   * design notes etc.. used for internal purpose. Not visible to the runtime system.
-   * To be used to document design decisions etc...
-   */
-  notes?: string;
-  /**
-   * used for validation as well as generating sql script
-   */
-  isRequired?: boolean;
-  /**
-   * if specified, it should be a
-   */
-  defaultValue?: string;
-  /**
-   * used by the client-side for rendering
-   */
-  label?: string;
-  /**
-   * used by the client-side for rendering
-   */
-  icon?: string;
-  /**
-   * used by the client-side for rendering
-   */
-  suffix?: string;
-  /**
-   * used by the client-side for rendering
-   */
-  prefix?: string;
-  /**
-   * used by the client-side for rendering
-   */
-  placeHolder?: string;
-  /**
-   * used by the client-side for rendering
-   */
-  hint?: string;
-  /**
-   * not recommended, but in some cases the field may contain an array of values.
-   * if this is set to true, then it is assumed that the field is actually a text-field and the value must be a comma-separated list of values,each of which conform to the specified value-schema
-   */
-  isArray?: boolean;
-  /**
-   * how should this field be rendered in a form/page?
-   */
-  renderAs?: FieldRendering;
-  /**
-   * used by the client-side for rendering
-   */
-  width?: VisualWidth;
-  /**
-   * expression that determine how values for this field are generated across rows for demo/tst purposes
-   */
-  demoValue?: string;
-
-  /** any custom action to be taken on change of this field. If specified, this action must be defined in the page.ts */
-  onChange?: string;
-  /**
-   * any custom action to be taken while user keeps typing value for this field.
-   * If specified, this action must be defined in the page.ts
-   */
-  onBeingChanged?: string;
-
-  /**
-   * text field may be for a password
-   */
-  isPassword?: true;
-
-  /** for image field */
-  imageNamePrefix?: string;
-
-  /** for image fields */
-  imageNameSuffix?: string;
 };
 
 /**
@@ -333,21 +208,6 @@ export type InterFieldValidation = {
    */
   onlyIfFieldValueEquals?: 'string';
 };
-
-/**
- * ways to render a field(data-bound control) in a page/form
- */
-export type FieldRendering =
-  | 'hidden'
-  | 'output'
-  | 'image'
-  | 'text-field'
-  | 'text-area'
-  | 'password'
-  | 'select'
-  | 'select-output'
-  | 'check-box'
-  | 'custom';
 
 /**
  * operations on a record/form/data-set. Traditionally called CRUD for Create, Read, Update,Delete

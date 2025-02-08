@@ -10,21 +10,18 @@
  *
  */
 import {
-  FieldRendering,
   FormOperation,
   SortBy,
   StringMap,
   VisualWidth,
   Values,
-  ValueType,
   Value,
   BaseView,
-  Markups,
   ValueRenderingDetails,
   Comparator,
   FormController,
-  SimpleList,
   OptionalOf,
+  RecordFieldAndDataField,
 } from '../..';
 /**
  * basic attributes of a Page.
@@ -257,72 +254,8 @@ export type Button = BaseComponent & {
   buttonOptions?: StringMap<unknown>;
 };
 
-type FieldAttributes = {
+type FieldAttributes = RecordFieldAndDataField & {
   isRequired: boolean;
-  valueType: ValueType;
-  /**
-   * how this field is to be rendered
-   */
-  renderAs: FieldRendering;
-  /**
-   * value schema is strongly advised to ensure that the value entered by the client is valid
-   * however, in situations where a temp/local field is used, it may be enough just to check that the value is is of the right type.
-   * if omitted, a value for this field is validated to ensure that it is of the specified valueType
-   */
-  valueSchema?: string;
-  defaultValue?: string;
-  /**
-   * to be used for output fields only.
-   * this is the name of a pre-defined formatter
-   */
-  valueFormatter?: string;
-  label?: string;
-  /**
-   * attributes for rendering the label
-   */
-  labelAttributes?: Markups;
-  /**
-   * if this field is a drop-down.
-   * to be used only if the list is simple, and is not a common one across several other fields.
-   * also useful if the field is synthesized at run time.
-   */
-  listOptions?: SimpleList;
-  /**
-   * name of the list that is defined in valueLists collection.
-   * If specified, it must be present in valueLists collection.
-   * ignored if listOptions are specified
-   */
-  listName?: string;
-  /**
-   * field name that has the value for the key for the above list. e.g. countryId would be the listKeyFieldName for field "state"
-   */
-  listKeyFieldName?: string;
-  /**
-   * in case the list is keyed, but this field uses a deign-time fixed value for the key.
-   * e.g. reportField uses a keyed-list named reportFields, and the current field is mean for a reportName="users"
-   * in such a case, listKeyFieldName should not be specified, but listKeyValue="users"
-   */
-  listKeyValue?: string | number;
-  /** any custom action to be taken on change of this field. If specified, this action must be defined in the page.ts */
-  onChange?: string;
-  /**
-   * any custom action to be taken while user keeps typing value for this field.
-   * If specified, this action must be defined in the page.ts
-   */
-  onBeingChanged?: string;
-  hint?: string;
-  /**
-   * text field may be for a password
-   */
-  isPassword?: true;
-  /** for image field */
-  imageNamePrefix?: string;
-  /** for image fields */
-  imageNameSuffix?: string;
-  /**
-   * used by the client-side for rendering
-   */
-  width?: VisualWidth;
 };
 /**
  * Simplest way to render a field based on the field defined in the associated record.
@@ -602,7 +535,7 @@ export type FunctionAction = BaseAction & {
    */
   functionName: string;
   /** optional parameters to be passed to the function. must match the published api of that function */
-  params?: {};
+  params?: StringMap<any>;
 };
 /**
  * form related action, like fetching and saving form data
@@ -656,9 +589,9 @@ export type FilterAction = BaseAction & {
 };
 
 /**
- * parameters based on which filter conditions are assembled at run time
+ * parameters based on which filter conditions are assembled at run time.
  * At run time, the data controller is queried for dat for field (and toField if required) to get the values to be compared
- * a condition is going to be like "field1 = 'abcd'" or "field 2 Between 32 and 45"
+ * a condition is going to be like "field1 = 'abcd'" or "field2 Between 32 and 45"
  */
 export type FilterFields = {
   [field: string]: {
@@ -668,9 +601,21 @@ export type FilterFields = {
      */
     isRequired?: boolean;
     /**
-     * required if comparator is "between"
+     * required if comparator is "between", and if toFieldValue is not specified
      */
     toField?: string;
+
+    /**
+     * if the field value is known at design time.
+     * note that this is NOT default, but it is THE value.
+     * that is, this value is used even if the field were to have a different value available at run time
+     */
+    fieldValue?: Value;
+    /**
+     * if the to-value for the comparator is known at design time.
+     * if this is specified, then toField is ignored, even if it is specified
+     */
+    toFieldValue?: Value;
   };
 };
 /**

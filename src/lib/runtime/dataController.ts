@@ -90,6 +90,14 @@ export interface TableViewerController extends DataController {
    */
   rowClicked(rowIdx: number): void;
   /**
+   * user has clicked on a clickable cell.
+   * this event is triggered if the column has an onClick action
+   * 0-based index of the row in the data-array
+   * @param rowIdx
+   * @param action associated with the column that was clicked (onClick="action")
+   */
+  cellClicked(rowIdx: number, action: string): void;
+  /**
    * show only rows with the searched text. This is case-insensitive
    *
    * @param text empty string to reset and show all rows
@@ -369,7 +377,7 @@ export interface FormController extends DataController {
    * @param actionName
    * @param params depends on the type of action and the context.
    */
-  act(actionName: string, params?: unknown): void;
+  act(actionName: string, params?: StringMap<any>): void;
 
   /**
    * a child is reporting an event. any handler that was added using addEventLister will be called for this event

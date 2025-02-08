@@ -17,6 +17,138 @@ export type OneOf<T> = {
     } & Partial<Record<Exclude<keyof T, K>, never>>;
 }[keyof T];
 /**
+ * ways to render a field(data-bound control) in a page/form
+ */
+export type FieldRendering = 'hidden' | 'output' | 'image' | 'text-field' | 'text-area' | 'password' | 'select' | 'select-output' | 'check-box' | 'custom';
+/**
+ * Field of a record is used for rendering a DataField on the page.
+ * Here are the  attributes of a Field in a record that is meant for the DataField
+ */
+export type RecordFieldAndDataField = {
+    /**
+     * if specified, it should be a
+     */
+    defaultValue?: string;
+    /**
+     * relevant if this field is included in a tabular list
+     */
+    filterable?: boolean;
+    /**
+     * any formatting requirements for this field when rendering teh value as output?
+     */
+    formattingFn?: string;
+    /**
+     * used by the client-side for rendering a tabular list of rows. Typically, ids are hidden,
+     */
+    hideInList?: boolean;
+    /**
+     * some fields in a record may be managed programmatically, and are not edited by the end-user
+     */
+    hideInSave?: boolean;
+    /**
+     * used by the client-side for rendering
+     */
+    hint?: string;
+    /**
+     * used by the client-side for rendering
+     */
+    icon?: string;
+    /** for image field */
+    imageNamePrefix?: string;
+    /** for image fields */
+    imageNameSuffix?: string;
+    /**
+     * not recommended, but in some cases the field may contain an array of values.
+     * if this is set to true, then it is assumed that the field is actually a text-field and the value must be a comma-separated list of values,each of which conform to the specified value-schema
+     */
+    isArray?: boolean;
+    /**
+     * used by the client-side for rendering
+     */
+    label?: string;
+    /**
+     * attributes for rendering the label
+     */
+    labelAttributes?: Markups;
+    /**
+     * if the list of values is a keyed-list and the key value is to be taken from another field.
+     * Like state-code that would depend on 'country-code'
+     */
+    listKeyFieldName?: string;
+    /**
+     * in case the list is keyed, but this field uses a deign-time fixed value for the key.
+     * e.g. reportField uses a keyed-list named reportFields, and the current field is mean for a reportName="users"
+     * in such a case, listKeyName should not be specified, but listKeyValue="users"
+     */
+    listKeyValue?: string | number;
+    /**
+     * if the value is one of a list of enumerated values..
+     * like if the field is country-code, then it may be associated with a pre-defined list named 'countries'
+     */
+    listName?: string;
+    /**
+     * if this field is a drop-down.
+     * to be used only if the list is simple, and is not a common one across several other fields.
+     * also useful if the field is synthesized at run time.
+     */
+    listOptions?: SimpleList;
+    /**
+     * id for the message to be flashed in the client if this field fails validation
+     */
+    messageId?: string;
+    /**
+     * any custom action to be taken while user keeps typing value for this field.
+     * If specified, this action must be defined in the page.ts
+     */
+    onBeingChanged?: string;
+    /** any custom action to be taken on change of this field. If specified, this action must be defined in the page.ts */
+    onChange?: string;
+    /**
+     * to action when the field is clicked
+     */
+    onClick?: string;
+    /**
+     * used by the client-side for rendering
+     */
+    placeHolder?: string;
+    /**
+     * used by the client-side for rendering
+     */
+    prefix?: string;
+    /**
+     * how should this field be rendered in a form/page?
+     */
+    renderAs?: FieldRendering;
+    /**
+     * relevant if this field is included in a tabular list
+     */
+    sortable?: boolean;
+    /**
+     * used by the client-side for rendering
+     */
+    suffix?: string;
+    /**
+     * to be used for output fields only.
+     * this is the name of a pre-defined formatter
+     */
+    valueFormatter?: ValueFormatter;
+    /**
+     * how to validate the value of this field?
+     * optional for fields that are not coming from an external source.
+     * however, it also serves as a good documentation about the expected range of values.
+     * hence it is highly recommended that this is specified.
+     */
+    valueSchema?: string;
+    /**
+     * value type 'boolean' 'text' 'integer' etc..
+     */
+    valueType: ValueType;
+    /**
+     * used by the client-side for rendering
+     */
+    width?: VisualWidth;
+};
+/**
  * A global function that is accessible at the app level.
  *
  * @param ac: the app controller
@@ -24,7 +156,7 @@ export type OneOf<T> = {
  * @param msgs array to which the function can add messages that may be passed on to the UX
  * @returns any. In some situations the return value may also be checked for truthy/falsy to trigger events like onsuccess etc..
  */
-export type GlobalFunction = (ac: AppController, params: unknown, msgs: DetailedMessage[]) => unknown;
+export type GlobalFunction = (ac: AppController, params: StringMap<any> | undefined, msgs: DetailedMessage[]) => unknown;
 /**
  * A function that is to be triggered on some event. This is executed with page as the context.
  *
@@ -34,7 +166,7 @@ export type GlobalFunction = (ac: AppController, params: unknown, msgs: Detailed
  * @param msgs array to which the function can add messages that may be passed on to the UX
  * @returns any. In some situations the return value may also be checked for truthy/falsy to trigger evens like onsuccess etc..
  */
-export type PageFunction = (pc: PageController, params: unknown, msgs: DetailedMessage[]) => unknown;
+export type PageFunction = (pc: PageController, params: StringMap<any> | undefined, msgs: DetailedMessage[]) => unknown;
 /**
  * a function that is triggered on events like
  * onChanged, onChanging, onValueChanged etc..
@@ -45,7 +177,7 @@ export type PageFunction = (pc: PageController, params: unknown, msgs: DetailedM
  * @param msgs array to which the function can add messages that may be passed on to the UX
  * @returns any. In some situations the return value may also be checked for truthy/falsy to trigger evens like onsuccess etc..
  */
-export type FormFunction = (fc: FormController, param: unknown, msgs: DetailedMessage[]) => unknown;
+export type FormFunction = (fc: FormController, param: StringMap<any> | undefined, msgs: DetailedMessage[]) => unknown;
 /**
  * a function that is triggered just before requesting a service using a ServiceAction.
  * This is an intercept function that can either modify the payload for the request, or abort the request with an error message.
@@ -140,8 +272,9 @@ export type SchemaError = {
 /**
  * function that validates the supplied value, after parsing itq.
  */
-export type ValueValidationFn = (
-/** non-empty */ value: string) => ValueValidationResult;
+export type ValueValidationFn = (value: {
+    value: string;
+}) => ValueValidationResult;
 /**
  * data-structure returned by a validation function.
  * value is undefined if the string could not be parsed into the right type
@@ -283,7 +416,11 @@ export type ValueRenderingDetails = {
     /**
      * name of a pre-defined formatter-function
      */
-    valueFormatterFn?: string;
+    formattingFn?: string;
+    /**
+     * action to be taken when user clicks on this value
+     */
+    onClick?: string;
 };
 export type VisualWidth = number;
 /**
@@ -307,11 +444,11 @@ export type FilterCondition = {
      * use ${field-name} notation to refer to another field instead of a value.
      * e.g. value="${price}"
      */
-    value: string | number | boolean;
+    value: Value;
     /**
      * required if the operator is between/range. ignored otherwise
      */
-    toValue?: string | number;
+    toValue?: Value;
 };
 /**
  * comparators for forming conditions like id = '1234'
