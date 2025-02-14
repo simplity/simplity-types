@@ -146,7 +146,7 @@ export type ExtendedRecord = BaseRecord & {
    */
   mainRecordName: string;
   /**
-   * All fields from thee main record are included by default.
+   * All fields from the main record are included by default.
    * Specify the subset of field names to be included if only a subset of fields are to be included
    */
   fieldNames?: string[];

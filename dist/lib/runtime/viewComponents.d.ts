@@ -18,13 +18,15 @@ export interface AppView {
     /**
      * disable user interaction.
      * Typically used during page loads/updates
+     * Caller MUST ensure that a subsequent call is made to enableUx()
      */
     disableUx(): void;
     /**
-     * enable user interaction.
+     * enable user interaction. Caller should have invoked  disable() earlier
      * Typically used during page loads/updates
+     * @param force to be used in case of some issue during async functions that a matched disable/enable are not working
      */
-    enableUx(): void;
+    enableUx(force?: boolean): void;
     /**
      * show messages as per the chosen design to show/flash message in a non-intrusive way
      * @param alerts

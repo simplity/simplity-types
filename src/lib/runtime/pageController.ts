@@ -26,12 +26,6 @@ export type ServiceRequestOptions = {
    */
   payload?: Vo;
   /**
-   * services are requested in the background by default.
-   * user can continue to interact with the page.
-   * if set to true, the page is disabled for user interaction till teh response is received
-   */
-  toDisableUx?: boolean;
-  /**
    * form control that should receive the response.
    * default is the form control associated with the page
    */

@@ -588,36 +588,36 @@ export type FilterAction = BaseAction & {
   maxRows?: number;
 };
 
+export type FilterFields = StringMap<FilterField>;
 /**
  * parameters based on which filter conditions are assembled at run time.
  * At run time, the data controller is queried for dat for field (and toField if required) to get the values to be compared
  * a condition is going to be like "field1 = 'abcd'" or "field2 Between 32 and 45"
  */
-export type FilterFields = {
-  [field: string]: {
-    comparator: Comparator;
-    /**
-     * if true, it is a run-time error if the field has no value
-     */
-    isRequired?: boolean;
-    /**
-     * required if comparator is "between", and if toFieldValue is not specified
-     */
-    toField?: string;
+export type FilterField = {
+  comparator: Comparator;
+  /**
+   * if true, it is a run-time error if the field has no value
+   */
+  isRequired?: boolean;
+  /**
+   * required if comparator is "between", and if toFieldValue is not specified
+   */
+  toField?: string;
 
-    /**
-     * if the field value is known at design time.
-     * note that this is NOT default, but it is THE value.
-     * that is, this value is used even if the field were to have a different value available at run time
-     */
-    fieldValue?: Value;
-    /**
-     * if the to-value for the comparator is known at design time.
-     * if this is specified, then toField is ignored, even if it is specified
-     */
-    toFieldValue?: Value;
-  };
+  /**
+   * if the field value is known at design time.
+   * note that this is NOT default, but it is THE value.
+   * that is, this value is used even if the field were to have a different value available at run time
+   */
+  fieldValue?: Value;
+  /**
+   * if the to-value for the comparator is known at design time.
+   * if this is specified, then toField is ignored, even if it is specified
+   */
+  toFieldValue?: Value;
 };
+
 /**
  * request a specific service
  */

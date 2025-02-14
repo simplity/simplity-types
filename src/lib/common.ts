@@ -497,11 +497,12 @@ export type FilterCondition = {
   field: string;
   comparator: Comparator;
   /**
+   * skipped for hasValue ('#') and hasNoValue ('!#') operators. Required for other operators
    * value must be of the right type for the field and the comparator
    * use ${field-name} notation to refer to another field instead of a value.
    * e.g. value="${price}"
    */
-  value: Value;
+  value?: Value;
 
   /**
    * required if the operator is between/range. ignored otherwise
@@ -519,9 +520,11 @@ export type Comparator =
   | '<='
   | '>'
   | '>='
-  | '><'
-  | '^'
-  | '~';
+  | '><' //between
+  | '^' //starts-with
+  | '~' //contains
+  | '#' //has-value
+  | '!#'; //has-no-value
 
 export type AlertType = 'success' | 'info' | 'warning' | 'error';
 
