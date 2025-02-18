@@ -176,9 +176,9 @@ export type EventAction = {
 /**
  * Common properties of any component. In a class-sense, this is the base class
  */
-export type BaseComponent = {
+type BaseComponent = {
   name: string;
-  compType: ComponentType;
+  compType: string;
   /**
    * parent may use this to assign appropriate style based on this width
    */
@@ -195,33 +195,23 @@ export type BaseComponent = {
   /**
    * a specific component may be designed completely differently from the standard ones.
    * however, the html must still follow the naming conventions for data-attributes and any other requirement for that component.
-   * this is the name of the html file, that has the actual htmls
+   * this is the name of the html template that provides the html fragment to be used instead of the standard template
    */
-  customHtml?: string;
+  templateName?: string;
   /**
    * initial display state. e.g. {hidden: true}
    */
   displayStates?: StringMap<Value>;
 };
-/**
- * component type
- */
-export type ComponentType =
-  | 'button'
-  | 'buttonPanel'
-  | 'field'
-  | 'referred'
-  | 'panel'
-  | 'static'
-  | 'table'
-  | 'tabs';
 
+export type ComponentType = PageComponent['compType'];
 /**
  * a visual component of a page
  */
 export type PageComponent =
   | Button
   | ButtonPanel
+  | Chart
   | DataField
   | ReferredField
   | Panel
@@ -267,6 +257,10 @@ export type ReferredField = BaseComponent & {
 } & OptionalOf<FieldAttributes>;
 
 /**
+ * pre-defined panel variants. App-specific variants can be added using templateType instead of panelType
+ */
+export type PanelType = 'outline' | 'flex';
+/**
  * Field is a component that is bound to a data-element at run time.
  */
 export type DataField = BaseComponent & {
@@ -278,9 +272,9 @@ export type Panel = BaseComponent & {
 
   /**
    * default panel is a wrapper of items. It will in turn render the child items, as if they were directly under the parent.
-   * Choose a panel-type defined by the specific app, if this panel has different behavior.
+   * Choose a panel-type variant that is pre-defined. To use an app-specific panel, skip this and use templateName
    */
-  panelType?: string;
+  panelType?: PanelType;
   /**
    * name of the child-form that defines the data fields in this panel.
    * Important to note that the name of the panel is the name with which ths sub-form is known to the parent-form
@@ -305,12 +299,17 @@ export type Panel = BaseComponent & {
  */
 export type StaticComp = BaseComponent & {
   compType: 'static';
-  staticType: StaticCompType;
+  /**
+   * use this for one of the known static elements.
+   * skip this and specify templateName to use an app-specific element
+   * NOTE: if both (staticType and templateName) are missing, then an empty div is added
+   */
+  staticType?: StaticCompType;
   content?: string;
   imageName?: string;
   elementOptions?: StringMap<unknown>;
 };
-export type StaticCompType = 'image' | 'content' | 'line' | 'custom';
+export type StaticCompType = 'image' | 'content' | 'line';
 /**
  * Data table that renders tabular data (rows and columns) in readonly mode
  * There may be a feature to select rows, but the data itself is not editable
@@ -433,7 +432,7 @@ export type TableEditor = BaseComponent & {
    * Note that the selectField, if specified, should not be defined as a column.
    * Value of that field is automatically linked to the selection status of the rows
    */
-  children: LeafComponent[];
+  children?: LeafComponent[];
   /**
    * a form-based table comes with several other features.
    * strongly recommended that the table be based on a form, but there are certainly situations where a form may not be required
@@ -488,6 +487,16 @@ export type Tab = Panel & {
   icon?: string;
 };
 
+/**
+ * chart
+ */
+export type Chart = BaseComponent & {
+  chartType: 'pie';
+  /**
+   * charts take a table (rows of Values) as input data
+   */
+  formName: string;
+};
 type BaseAction = {
   name: string;
   /**

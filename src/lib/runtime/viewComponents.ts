@@ -1,11 +1,11 @@
 import {
   Alert,
   AppController,
-  BaseComponent,
   Button,
   DataField,
   FormController,
   Page,
+  PageComponent,
   PageController,
   Panel,
   SimpleList,
@@ -214,7 +214,7 @@ export interface PageView {
  */
 export interface BaseView {
   readonly name: string;
-  readonly comp: BaseComponent;
+  readonly comp: PageComponent;
   readonly ac: AppController;
   readonly pc: PageController;
 

@@ -1,4 +1,4 @@
-import { Alert, AppController, BaseComponent, Button, DataField, FormController, Page, PageController, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, Tabs, Value, Values } from '../..';
+import { Alert, AppController, Button, DataField, FormController, Page, PageComponent, PageController, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, Tabs, Value, Values } from '../..';
 /**
  * An App-view is the outer most container component inside of which the relevant view components are laid out
  * When an AppView instance is created, it should not have any child layouts in that.
@@ -142,7 +142,7 @@ export interface PageView {
  */
 export interface BaseView {
     readonly name: string;
-    readonly comp: BaseComponent;
+    readonly comp: PageComponent;
     readonly ac: AppController;
     readonly pc: PageController;
     /**

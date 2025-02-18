@@ -1,15 +1,17 @@
-import { FunctionDetails, FunctionType, ListSource, StringMap } from './common';
+import { FunctionDetails, FunctionType, ListSource, StringMap, Value } from './common';
 import { Layout, MenuItem, Module } from './design/layout';
 import { ValueList } from './design/list';
-import { Page } from './design/page';
+import { Page, PageComponent } from './design/page';
 import { PageAlteration } from './design/pageAlteration';
 import { Record } from './design/record';
 import { ServiceResponse, ServiceSpec } from './design/serviceSpec';
 import { Sql } from './design/sql';
 import { PageTemplate } from './design/template';
 import { ValueSchema } from './design/valueSchema';
+import { FormController } from './runtime/dataController';
 import { Form } from './runtime/form';
 import { Service } from './runtime/service';
+import { BaseView } from './runtime/viewComponents';
 /**
  * Meta data that the app-designer creates and maintains.
  * These are pure meta-data and no programs/logic.
@@ -193,5 +195,22 @@ type OnlyRuntime = {
      * functions with specs and actual implementations
      */
     functionDetails?: StringMap<FunctionDetails>;
+    viewFactory?: ViewFactory;
+};
+/**
+ * app-specific view components can be designed as a substitute to standard simplity views,
+ * apps can also add new view components like charts and other specialized components
+ */
+export type ViewFactory = {
+    /**
+     * returns an instance of the right view component, or throws an error
+     * @param fc
+     * @param comp
+     * @param maxWidth max width units that the parent can accommodate. This is the actual width of the parent.
+     * @param value used as the initial value if this is a field
+     * @returns view-component instance
+     * @throws Error in case the type of the supplied component is not recognized
+     */
+    newElement(fc: FormController | undefined, comp: PageComponent, maxWidth: number, value?: Value): BaseView | undefined;
 };
 export {};

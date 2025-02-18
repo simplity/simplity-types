@@ -16,6 +16,7 @@ import {
   ValueType,
   NavigationOptions,
   Alert,
+  ValueSchema,
 } from '../..';
 
 /**
@@ -63,6 +64,14 @@ export interface AppController {
    * @throws Error in case the menu does not exist
    */
   getMenu(id: string): MenuItem;
+
+  /**
+   *
+   * @param name unique name of  the value schema
+   * @returns value schema detailed
+   * @throws Error in case the value-schema does not exist
+   */
+  getValueSchema(name: string): ValueSchema;
 
   /**
    *

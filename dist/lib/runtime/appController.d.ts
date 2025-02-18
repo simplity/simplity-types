@@ -1,4 +1,4 @@
-import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, NavigationOptions, Alert } from '../..';
+import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, NavigationOptions, Alert, ValueSchema, ViewFactory } from '../..';
 /**
  * App controller provides centralized services for all its components
  * This run-time component is built using all the app-components and scripts/functions of the app
@@ -40,6 +40,13 @@ export interface AppController {
      * @throws Error in case the menu does not exist
      */
     getMenu(id: string): MenuItem;
+    /**
+     *
+     * @param name unique name of  the value schema
+     * @returns value schema detailed
+     * @throws Error in case the value-schema does not exist
+     */
+    getValueSchema(name: string): ValueSchema;
     /**
      *
      * @param id unique id for this menu item
@@ -289,4 +296,5 @@ export interface AppController {
      * @param alerts
      */
     showAlerts(alerts: Alert[]): void;
+    getViewFactory(): ViewFactory | undefined;
 }
