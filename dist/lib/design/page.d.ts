@@ -189,12 +189,17 @@ type BaseComponent = {
      * initial display state. e.g. {hidden: true}
      */
     displayStates?: StringMap<Value>;
+    /**
+     * an app may have app-specific view implementation. Actual parameters are left to the app implementation.
+     * If no options are relevant, an empty object should be specified to mark this component to be an app-specific plugin
+     */
+    pluginOptions?: StringMap<any>;
 };
 export type ComponentType = PageComponent['compType'];
 /**
  * a visual component of a page
  */
-export type PageComponent = Button | ButtonPanel | DataField | ReferredField | Panel | StaticComp | TableViewer | TableEditor | Tabs | Tab;
+export type PageComponent = Button | ButtonPanel | Chart | DataField | ReferredField | Panel | StaticComp | TableViewer | TableEditor | Tabs | Tab;
 /**
  * subset of page visual components that just act as containers for their child components
  */
@@ -392,11 +397,12 @@ export type TableEditor = BaseComponent & {
      */
     editable: true;
     /**
+     * default is to use all the fields in the form as children.
      * leaf elements can serve as columns. Not panels and tables.
      * Note that the selectField, if specified, should not be defined as a column.
      * Value of that field is automatically linked to the selection status of the rows
      */
-    children: LeafComponent[];
+    children?: LeafComponent[];
     /**
      * a form-based table comes with several other features.
      * strongly recommended that the table be based on a form, but there are certainly situations where a form may not be required
@@ -448,6 +454,19 @@ export type Tab = Panel & {
      */
     icon?: string;
 };
+/**
+ * chart
+ */
+export type Chart = BaseComponent & {
+    chartType: 'pie';
+    /**
+     * charts take a table (rows of Values) as input data
+     */
+    formName: string;
+};
+/**
+ * common attributes of all the actions
+ */
 type BaseAction = {
     name: string;
     /**

@@ -1,4 +1,4 @@
-import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, NavigationOptions, Alert, ValueSchema, ViewFactory } from '../..';
+import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, NavigationOptions, Alert, ValueSchema, PageComponent, BaseView, FormController, Value } from '../..';
 /**
  * App controller provides centralized services for all its components
  * This run-time component is built using all the app-components and scripts/functions of the app
@@ -85,6 +85,16 @@ export interface AppController {
      * @throws Error if such a function is not available, or if the function is not of the desired type
      */
     getFn(functionName: string, type?: FunctionType): FunctionDetails;
+    /**
+     * Get a vew instance for this component as a plugin
+     * plugins are app-specific view-components corresponding to the standard view-components of simplity.
+     * a design-component can set pluginOptions attribute to invoke this feature
+     * @param fc
+     * @param comp
+     * @param maxWidth
+     * @param value
+     */
+    newPluginComponent(fc: FormController | undefined, comp: PageComponent, maxWidth: number, value?: Value): BaseView;
     /**
      * get the src (url) for an image. returned value is suitable to set src="" of an <img> tag
      * @param imageName
@@ -296,5 +306,4 @@ export interface AppController {
      * @param alerts
      */
     showAlerts(alerts: Alert[]): void;
-    getViewFactory(): ViewFactory | undefined;
 }

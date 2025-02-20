@@ -195,22 +195,14 @@ type OnlyRuntime = {
      * functions with specs and actual implementations
      */
     functionDetails?: StringMap<FunctionDetails>;
-    viewFactory?: ViewFactory;
+    viewComponentFactory?: ViewComponentFactory;
 };
 /**
- * app-specific view components can be designed as a substitute to standard simplity views,
- * apps can also add new view components like charts and other specialized components
+ * a function that creates an instance of a View-Component for the page-component that is supplied as input.
+ * this is an app-specific implementation of the corresponding view-component.
+ * This function is used instead of teh standard simplity function if a page-component specifies pluginOption attribute
  */
-export type ViewFactory = {
-    /**
-     * returns an instance of the right view component, or throws an error
-     * @param fc
-     * @param comp
-     * @param maxWidth max width units that the parent can accommodate. This is the actual width of the parent.
-     * @param value used as the initial value if this is a field
-     * @returns view-component instance
-     * @throws Error in case the type of the supplied component is not recognized
-     */
-    newElement(fc: FormController | undefined, comp: PageComponent, maxWidth: number, value?: Value): BaseView | undefined;
+export type ViewComponentFactory = {
+    newViewComponent(fc: FormController | undefined, comp: PageComponent, maxWidth: number, value?: Value): BaseView;
 };
 export {};

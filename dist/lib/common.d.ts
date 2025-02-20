@@ -19,7 +19,7 @@ export type OneOf<T> = {
 /**
  * ways to render a field(data-bound control) in a page/form
  */
-export type FieldRendering = 'hidden' | 'output' | 'image' | 'text-field' | 'text-area' | 'password' | 'select' | 'select-output' | 'check-box' | 'custom';
+export type FieldRendering = 'hidden' | 'output' | 'image' | 'text-field' | 'text-area' | 'password' | 'select' | 'select-output' | 'check-box';
 /**
  * Field of a record is used for rendering a DataField on the page.
  * Here are the  attributes of a Field in a record that is meant for the DataField

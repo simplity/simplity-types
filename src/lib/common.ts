@@ -40,8 +40,7 @@ export type FieldRendering =
   | 'password'
   | 'select'
   | 'select-output'
-  | 'check-box'
-  | 'custom';
+  | 'check-box';
 
 /**
  * Field of a record is used for rendering a DataField on the page.

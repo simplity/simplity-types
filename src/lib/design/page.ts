@@ -202,6 +202,12 @@ type BaseComponent = {
    * initial display state. e.g. {hidden: true}
    */
   displayStates?: StringMap<Value>;
+
+  /**
+   * an app may have app-specific view implementation. Actual parameters are left to the app implementation.
+   * If no options are relevant, an empty object should be specified to mark this component to be an app-specific plugin
+   */
+  pluginOptions?: StringMap<any>;
 };
 
 export type ComponentType = PageComponent['compType'];
@@ -428,6 +434,7 @@ export type TableEditor = BaseComponent & {
    */
   editable: true;
   /**
+   * default is to use all the fields in the form as children.
    * leaf elements can serve as columns. Not panels and tables.
    * Note that the selectField, if specified, should not be defined as a column.
    * Value of that field is automatically linked to the selection status of the rows
@@ -497,6 +504,10 @@ export type Chart = BaseComponent & {
    */
   formName: string;
 };
+
+/**
+ * common attributes of all the actions
+ */
 type BaseAction = {
   name: string;
   /**
