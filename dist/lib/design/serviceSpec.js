@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.STATUS_DESCRIPTIONS = void 0;
-exports.STATUS_DESCRIPTIONS = {
+export const STATUS_DESCRIPTIONS = {
     communicationError: 'An error was encountered while communicating with the server',
     completed: 'Completed with success',
     completedWithErrors: 'Completed, but there were errors',
@@ -13,4 +10,4 @@ exports.STATUS_DESCRIPTIONS = {
     serviceNameRequired: 'No service name was specified',
     sessionRequired: 'this service request valid only in a conversational mode. Hence a session id is required',
 };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VydmljZVNwZWMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvbGliL2Rlc2lnbi9zZXJ2aWNlU3BlYy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUEyRmEsUUFBQSxtQkFBbUIsR0FFNUI7SUFDRixrQkFBa0IsRUFDaEIsOERBQThEO0lBQ2hFLFNBQVMsRUFBRSx3QkFBd0I7SUFDbkMsbUJBQW1CLEVBQUUsa0NBQWtDO0lBQ3ZELGlCQUFpQixFQUFFLHFEQUFxRDtJQUN4RSxRQUFRLEVBQUUscUJBQXFCO0lBQy9CLGFBQWEsRUFDWCxzRkFBc0Y7SUFDeEYsYUFBYSxFQUFFLG9EQUFvRDtJQUNuRSxXQUFXLEVBQ1QsK0VBQStFO0lBQ2pGLG1CQUFtQixFQUFFLCtCQUErQjtJQUNwRCxlQUFlLEVBQ2IsMEZBQTBGO0NBQzdGLENBQUMifQ==
+//# sourceMappingURL=serviceSpec.js.map

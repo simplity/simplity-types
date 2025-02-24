@@ -22,7 +22,7 @@ import {
 export interface DataController {
   readonly name: string;
   readonly pc: PageController;
-  readonly type: 'form' | 'table' | 'grid';
+  readonly type: 'form' | 'table' | 'grid' | 'chart';
   /**
    * set/change display state of a field
    * @param compName field/component name
@@ -65,6 +65,9 @@ export interface DataController {
    * @returns true is all editable components are valid. false otherwise
    */
   validate(): boolean;
+}
+export interface ChartController extends DataController {
+  readonly type: 'chart';
 }
 
 export interface TableViewerController extends DataController {
@@ -243,10 +246,16 @@ export interface FormController extends DataController {
 
   /**
    * This form has a table-viewer, and the tableViewer is just being constructed.
-   * Note that the view calls this method inside of its constructor, but before rendering the view.
+   * Note that the view-component calls this method inside of its constructor, but before rendering the view.
    * @param view
    */
   newTableViewerController(view: TableViewerView): TableViewerController;
+
+  /**
+   * called by a chart-view inside its constructor, but before the chart is rendered
+   * @param view
+   */
+  newChartController(view: BaseView): ChartController;
 
   /**
    * This form has a table-editor, and the tableViewer is just being constructed.

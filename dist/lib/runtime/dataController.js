@@ -1,3 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGF0YUNvbnRyb2xsZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvbGliL3J1bnRpbWUvZGF0YUNvbnRyb2xsZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiJ9
+export {};
+//# sourceMappingURL=dataController.js.map

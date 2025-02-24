@@ -178,7 +178,7 @@ export type EventAction = {
  */
 type BaseComponent = {
   name: string;
-  compType: string;
+  compType: ComponentType;
   /**
    * parent may use this to assign appropriate style based on this width
    */
@@ -210,7 +210,16 @@ type BaseComponent = {
   pluginOptions?: StringMap<any>;
 };
 
-export type ComponentType = PageComponent['compType'];
+export type ComponentType =
+  | 'button'
+  | 'buttonPanel'
+  | 'chart'
+  | 'field'
+  | 'panel'
+  | 'referred'
+  | 'static'
+  | 'tabs'
+  | 'table';
 /**
  * a visual component of a page
  */
@@ -494,15 +503,26 @@ export type Tab = Panel & {
   icon?: string;
 };
 
+export type ChartType = 'pie';
+export type ChartField = ValueRenderingDetails & {
+  valueType: 'integer' | 'decimal';
+  /**
+   * valid color name as per standard CSS.
+   * It is recommended that you either choose colors for all columns, or skip for all
+   */
+  color?: string;
+};
+
 /**
- * chart
+ * A chart renders a tabular data. At an abstract level, this is an alternative to tableViewer
  */
 export type Chart = BaseComponent & {
-  chartType: 'pie';
+  compType: 'chart';
+  chartType: ChartType;
   /**
-   * charts take a table (rows of Values) as input data
+   * each field must be numeric.
    */
-  formName: string;
+  fields: ChartField[];
 };
 
 /**
@@ -593,9 +613,9 @@ export type FilterAction = BaseAction & {
   formOperation: 'filter';
   formName: string;
   /**
-   * name of the child-form (not the form name associated with that child)
+   * name of the table (table-component) that receives the filtered data
    */
-  childName: string;
+  targetTableName: string;
   /**
    * fields and the conditions based on which the rows for the child are fetched
    */
@@ -675,9 +695,10 @@ export type ServiceAction = BaseAction & {
    */
   fnAfterResponse?: string;
   /**
-   * is this service meant to get data for a specific child rather than the entire page?
-   * when a service returns, the payload is assumed to be meant for the entire page.
-   * This means the data for the page is first reset, and only the data received is set to all the page elements.
+   * The data received from a a service is is meant to be for the entire page.
+   * However, you may target a panel that is bound to its own form.
+   * Also, note that the data received is assumed to be "complete" data, and not incremental.
+   * That is, if no data is received for a field, then that field is reset. (Any old data is replaced with an empty string)
    */
   targetPanelName?: string;
 };
