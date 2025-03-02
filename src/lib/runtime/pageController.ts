@@ -171,13 +171,13 @@ export interface PageController {
    * this function is expected to be called for what it does, not not for what it returns.
    * the returned value is not
    * @param functionName
-   * @param params to be passed to the function
+   * @param additionalParams to be passed to the function
    * @param msgs array of messages to which messages could be added while locating and executing the function
    * @returns status of function call.
    */
   callFunction(
     nam: string,
-    params?: StringMap<any>,
+    additionalParams?: StringMap<any>,
     msgs?: DetailedMessage[]
   ): FnStatus;
 

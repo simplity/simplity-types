@@ -58,6 +58,10 @@ export interface AppView {
      */
     navigate(options: NavigationOptions): void;
     /**
+     * close the current page. It is an error to try to close the current page if the page stack is empty
+     */
+    closePage(): void;
+    /**
      * It is possible that a layout shows the page title outside of the page area.
      * this method is to be called to set the title. Note that this is NOT the title of the window
      * @param title
@@ -71,10 +75,6 @@ export interface AppView {
 }
 export type NavigationOptions = {
     /**
-     * if this is true, other parameters have no meaning.
-     */
-    closePage?: boolean;
-    /**
      * defaults to current
      */
     layout?: string;
@@ -86,7 +86,7 @@ export type NavigationOptions = {
      * default from the module if this is omitted
      */
     menuItem?: string;
-    params?: Values;
+    pageParameters?: Values;
     /**
      * if true, then the current page is not deleted, and saved on a stack
      */
@@ -124,7 +124,7 @@ export interface PageView {
     /**
      * run time parameters passed to this page
      */
-    readonly params?: Values;
+    readonly pageParams?: Values;
     /**
      * whether the page buttons are to be rendered or hidden
      * @param show true to show and false to hide

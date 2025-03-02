@@ -18,10 +18,11 @@ import {
   Value,
   BaseView,
   ValueRenderingDetails,
-  Comparator,
   FormController,
   OptionalOf,
   RecordFieldAndDataField,
+  NavigationOptions,
+  FilterCondition,
 } from '../..';
 /**
  * basic attributes of a Page.
@@ -574,8 +575,13 @@ export type FunctionAction = BaseAction & {
    * function name must be one of the functions defined in this page
    */
   functionName: string;
-  /** optional parameters to be passed to the function. must match the published api of that function */
-  params?: StringMap<any>;
+  /**
+   * Additional parameters to be passed to the function.
+   * Must match the published api specification of that function.
+   * This is all design-time determined constants.
+   * No feature is provided to pass run-time-determined parameters.
+   */
+  additionalParams?: StringMap<any>;
 };
 /**
  * form related action, like fetching and saving form data
@@ -584,12 +590,6 @@ export type FormAction = BaseAction & {
   type: 'form';
   formName: string;
   formOperation: FormOperation;
-  /**
-   * optional. DO NOT specify this if the get is based on key fields. Specify this ONLY IF you want to get data based on other fields
-   * field values to be provided as input to the API to get data.
-   * boolean indicates if the parameter is required/mandatory
-   */
-  params?: StringMap<boolean>;
 };
 
 /**
@@ -617,45 +617,15 @@ export type FilterAction = BaseAction & {
    */
   targetTableName: string;
   /**
-   * fields and the conditions based on which the rows for the child are fetched
+   * conditions based on which the rows for the child are fetched
    */
-  filterFields?: FilterFields;
+  filters?: FilterCondition[];
   /**
    * sorting of rows based on fields
    */
   sortBy?: SortBy[];
   fields?: string[];
   maxRows?: number;
-};
-
-export type FilterFields = StringMap<FilterField>;
-/**
- * parameters based on which filter conditions are assembled at run time.
- * At run time, the data controller is queried for dat for field (and toField if required) to get the values to be compared
- * a condition is going to be like "field1 = 'abcd'" or "field2 Between 32 and 45"
- */
-export type FilterField = {
-  comparator: Comparator;
-  /**
-   * if true, it is a run-time error if the field has no value
-   */
-  isRequired?: boolean;
-  /**
-   * required if comparator is "between", and if toFieldValue is not specified
-   */
-  toField?: string;
-
-  /**
-   * if the field value is known at design time.
-   * note that this is NOT default, but it is THE value.
-   * that is, this value is used even if the field were to have a different value available at run time
-   */
-  fieldValue?: Value;
-  /**
-   * if the to-value for the comparator is known at design time.
-   * if this is specified, then toField is ignored, even if it is specified
-   */
-  toFieldValue?: Value;
 };
 
 /**
@@ -665,27 +635,28 @@ export type ServiceAction = BaseAction & {
   type: 'service';
   serviceName: string;
   /**
-   * set this to true If the payload is to be prepared based on all the data elements on this page.
-   * If a the page is associated with a form, then that form is used as the basis, including the sub-forms if any.
-   * Else it is based on all the fields and tables rendered in the page.
-   * Data is validated first. Action is taken only if validations go through.
+   * submit the entire form/data-structure defined for this form.
    */
-  submitAllData?: boolean;
+  submitAll?: true;
+
   /**
-   * specify the specific sub-form to be used to prepare the payload.
-   * Ensure that submitAllData is unset or false for this option to be used.
+   * can be used only if submitAll is not set.
+   * submit the form/data-structure defined for a panel.
+   * the named panel must have childForm=""
    */
   panelToSubmit?: string;
+
   /**
-   * If the payload is to be prepared using selected field/table names.
-   * Use the boolean value to indicate if the value for the field/table is required.
-   * If a required value is not found, an error message is raised at run time, and the service is not requested.
+   * can be used only if submitAll and panelToSubmit are not set.
+   * list of fields to be submitted.
+   * If the boolean is true, the field is considered to be mandatory, and an error is generated if teh value is missing
    */
-  params?: StringMap<boolean>;
+  fieldsToSubmit?: StringMap<boolean>;
   /**
    * function to be executed just before requesting this service.
    * this function should be a RequestFunction type.
    * if the function returns falsy, then the service is not requested
+   * This feature can be used to prepare the required data to be submitted, or carrying out any special validations
    */
   fnBeforeRequest?: string;
   /**
@@ -710,49 +681,15 @@ export type ServiceAction = BaseAction & {
 export type NavigationAction = BaseAction & {
   type: 'navigation';
   /**
-   * where to go. Menu item is always associated with a page.
-   * optional if either layout or module is specified
-   */
-  menuItem?: string;
-  /**
    * user is warned and is asked to reconfirm before taking this action, in case the form is modified by the user
    */
   warnIfModified?: boolean;
-  /**
-   * defaults to current layout. Specified if the layout needs to be changed, or if menuItem is not specified.
-   */
-  layout?: string;
-  /**
-   * specified if the module is different from the current one, or if menuItem is not specified.
-   */
-  module?: string;
-  /**
-   * parameters to be passed to the page associated with the menu item.
-   *
-   * a parameter may be like id:2, or id:'abcd' or id:'$name'
-   * where name is the name of the field from which value is extracted.
-   * if the action is emitted from a table then this value will come from that row
-   */
-  params?: Values;
-  /**
-   * relevant if menuName is specified. if true, the current page is not closed, but is hidden.
-   * current page is made visible when the new page closes.
-   */
-  retainCurrentPage?: boolean;
-  /**
-   * relevant if retainCurrentPage=true. new page is opened as modal on the current page
-   */
-  asModal?: boolean;
+
   /**
    * relevant if retainCurrentPage = true. action to be taken when this page is un-hidden/activated again.
    */
   onReactivation?: string;
-  /**
-   * one of those rare cases when this action requires that the navigation path be reset.
-   * that is, if this page was opened after retaining the old page, and we still do not want to go back to that page!!!
-   */
-  erasePagesOnTheStack?: boolean;
-};
+} & NavigationOptions;
 /**
  * meta data for a button that is meant to navigate to a menu item
  */

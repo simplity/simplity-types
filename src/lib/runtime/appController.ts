@@ -333,6 +333,11 @@ export interface AppController {
   navigate(options: NavigationOptions): void;
 
   /**
+   * close this page. It is error to close the page if there are no pages in the page stack.
+   */
+  closePage(): void;
+
+  /**
    * user has selected a menu item. This comes from the view-side (not the controller side);
    * @param module a menu item can be part of more than modules,
    * @param menuItem

@@ -498,15 +498,24 @@ export type FilterCondition = {
   /**
    * skipped for hasValue ('#') and hasNoValue ('!#') operators. Required for other operators
    * value must be of the right type for the field and the comparator
-   * use ${field-name} notation to refer to another field instead of a value.
-   * e.g. value="${price}"
+   * use ${field-name} notation to get the value at run time from this field.
+   * e.g. value="${price}".
+   *
+   * Note that the value is picked-up at the client-side at run time.
    */
   value?: Value;
 
   /**
    * required if the operator is between/range. ignored otherwise
+   * Use ${field-name} to pick-up the value at rune time on the client-side
    */
   toValue?: Value;
+
+  /**
+   * set this to true if the value is required.
+   * It is considered to be an error if a value is not found for the ${field-name} at run time
+   */
+  isRequired?: boolean;
 };
 
 /**
