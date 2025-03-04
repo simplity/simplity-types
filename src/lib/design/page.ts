@@ -552,8 +552,27 @@ type BaseAction = {
  */
 export type CloseAction = BaseAction & {
   //actually base action attributes are not relevant, but having them simplifies type-checks
-  name: string;
   type: 'close';
+};
+
+/**
+ * Reset fields/tables on this page.
+ *
+ */
+export type ResetAction = BaseAction & {
+  type: 'reset';
+  /**
+   * by default all fields and tables will be reset.
+   * you may specify that a specific panel associated with a child-form be reset.
+   * Further, if fieldsToReset is also specified, then only the specified fields in this form will be reset
+   */
+  panelToReset?: string;
+  /**
+   * if specified, only the listed fields will be reset.
+   * These fields are from the root-form by default.
+   * if panelToReset is specified, only these fields from that child-form will be reset
+   */
+  fieldsToReset?: string[];
 };
 /**
  * A piece of work/task that is typically triggered through an event
@@ -564,6 +583,7 @@ export type Action =
   | FormAction
   | FunctionAction
   | NavigationAction
+  | ResetAction
   | ServiceAction
   | DisplayAction;
 /**

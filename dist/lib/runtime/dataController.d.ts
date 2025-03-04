@@ -32,6 +32,11 @@ export interface DataController {
      */
     setData(data: Vo | Vo[]): void;
     /**
+     * reset data in a form
+     * @param fields reset only the specified fields
+     */
+    resetData(fields?: string[]): void;
+    /**
      * get the data. For a non-editable controller, this returns the data that was received or set
      */
     getData(): Vo | Vo[];
@@ -220,15 +225,10 @@ export interface FormController extends DataController {
      */
     newFormController(name: string, form?: Form, data?: Vo): FormController;
     /**
-     * get the named child controller
+     * get the named child controller. It may be a direct child or may be somewhere in the hierarchy
      * @param name
      */
     getController(name: string): DataController | undefined;
-    /**
-     * recursively search for a child-controller with the given form name
-     * @param formName note that this is generally different from the controller name
-     */
-    searchChildController(formName: string): DataController | undefined;
     /**
      * ensures that the supplied action is triggered when the event is fired by the specified node
      * @param nodeName on which to listen to for the event

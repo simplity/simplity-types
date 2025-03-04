@@ -124,7 +124,7 @@ export interface PageView {
     /**
      * run time parameters passed to this page
      */
-    readonly pageParams?: Values;
+    readonly inputs: Values;
     /**
      * whether the page buttons are to be rendered or hidden
      * @param show true to show and false to hide
