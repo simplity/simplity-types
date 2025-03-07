@@ -163,9 +163,11 @@ export interface AppController {
    * get text for a message id
    * @param id
    * @param params run-time parameters, if this message is parameterized
-   * @returns id if no message is available for this id
+   * @param fallbackText text to be used if the specified id is not found, defaults to empty string.
+   * @returns message associated with the id, with any parameters being substituted with the supplied values.
+   *  if no message is found with the id, then the fallBackText is returned.
    */
-  getMessage(id: string, params?: string[]): string;
+  getMessage(id: string, params?: string[], fallbackText?: string): string;
 
   /**
    * @returns the array of permitted screens for a user.

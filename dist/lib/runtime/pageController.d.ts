@@ -1,4 +1,4 @@
-import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy, FilterParams, Values, StringMap } from '../..';
+import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy, FilterParams, Values, StringMap, Value } from '../..';
 /**
  * options for a service request
  */
@@ -62,6 +62,11 @@ export interface PageController {
      * @returns value that was set earlier with a call to setVariable(). undefined if it was not set.
      */
     getVariable(variable: string): AnyValue | Vo | undefined;
+    /**
+     * get value of a field
+     * @param qualifiedName if the field is defined in the root form, this this is a simple name. Otherwise it is panelName.fieldName etc..
+     */
+    getFieldValue(qualifiedName: string): Value | undefined;
     /**
      * A page keeps a status to know if the user has modified any data.
      * This information is used to enable/disable action buttons, or warn user on any exits

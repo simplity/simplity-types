@@ -10,7 +10,7 @@ export type ServiceSpec = {
     description?: string;
     serveGuests?: boolean;
     /**
-     * service is requestd with this form as data-input
+     * service is requested with this form as data-input
      */
     requestForm?: string;
     /**
@@ -96,10 +96,11 @@ export type DetailedMessage = {
      */
     type: 'error' | 'warning' | 'info' | 'success';
     /**
-     * unique name assigned to this message in the app
+     * unique name assigned to this message in the app.
      */
     id: string;
     /**
+     * Required if id is not specified. If text is specified, then the id is ignored.
      * formatted text in English that is ready to be rendered
      */
     text: string;

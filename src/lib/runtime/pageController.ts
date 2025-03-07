@@ -15,6 +15,7 @@ import {
   FilterParams,
   Values,
   StringMap,
+  Value,
 } from '../..';
 
 /**
@@ -86,6 +87,11 @@ export interface PageController {
    */
   getVariable(variable: string): AnyValue | Vo | undefined;
 
+  /**
+   * get value of a field
+   * @param qualifiedName if the field is defined in the root form, this this is a simple name. Otherwise it is panelName.fieldName etc..
+   */
+  getFieldValue(qualifiedName: string): Value | undefined;
   /**
    * A page keeps a status to know if the user has modified any data.
    * This information is used to enable/disable action buttons, or warn user on any exits
