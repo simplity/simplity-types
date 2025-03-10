@@ -1,4 +1,4 @@
-import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterCondition, SortBy, FilterParams, Values, StringMap, Value } from '../..';
+import { AppController, Vo, FnStatus, DetailedMessage, AnyValue, Action, SimpleList, KeyedList, FormController, FieldView, FormOperation, FilterParams, Values, StringMap, Value } from '../..';
 /**
  * options for a service request
  */
@@ -160,9 +160,4 @@ export type ReportServiceResponse = {
 /**
  * same as filterParams, but all attributes are mandatory
  */
-export type ReportSettings = FilterParams & {
-    maxRows: number;
-    fields: string[];
-    filters: FilterCondition[];
-    sorts: SortBy[];
-};
+export type ReportSettings = Required<FilterParams>;

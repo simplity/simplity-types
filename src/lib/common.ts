@@ -269,7 +269,7 @@ export type FormatterFunction = (
 
 /**
  * function to be called to initialize a view-component after it is created by the view-layer of simplity.
- * e.g. in html, if faltpickr is used, the inputElement must be initialized.
+ * e.g. in html, if flatpickr is used, the inputElement must be initialized.
  * @param view  abstract base-view. implementation should cast it to the rendering-specific element
  * for e.g. in html this is BaseElement.
  */
@@ -494,12 +494,16 @@ export type FilterCondition = {
    * name of the field used for filtering
    */
   field: string;
-  comparator: Comparator;
   /**
-   * skipped for hasValue ('#') and hasNoValue ('!#') operators. Required for other operators
+   * defaults to Equals ('=')
+   */
+  comparator?: Comparator;
+  /**
+   * Defaults to the value of the named field.
+   * Not relevant for hasValue ('#') and hasNoValue ('!#') operators.
    * value must be of the right type for the field and the comparator
-   * use ${field-name} notation to get the value at run time from this field.
-   * e.g. value="${price}".
+   * use ${field-name} notation if the value comes from a different field.
+   * e.g. amount="${value}".
    *
    * Note that the value is picked-up at the client-side at run time.
    */

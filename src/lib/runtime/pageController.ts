@@ -10,8 +10,6 @@ import {
   FormController,
   FieldView,
   FormOperation,
-  FilterCondition,
-  SortBy,
   FilterParams,
   Values,
   StringMap,
@@ -206,9 +204,4 @@ export type ReportServiceResponse = {
 /**
  * same as filterParams, but all attributes are mandatory
  */
-export type ReportSettings = FilterParams & {
-  maxRows: number;
-  fields: string[];
-  filters: FilterCondition[];
-  sorts: SortBy[];
-};
+export type ReportSettings = Required<FilterParams>;

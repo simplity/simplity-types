@@ -549,6 +549,10 @@ export type FormAction = BaseAction & {
     formOperation: FormOperation;
 };
 /**
+ *
+ */
+export type DisplaySettings = StringMap<StringMap<Value>>;
+/**
  * change the view related attribute of a component
  */
 export type DisplayAction = BaseAction & {
@@ -561,11 +565,7 @@ export type DisplayAction = BaseAction & {
      *    field1: {disabled: false, invalid: true}
      * }
      */
-    displaySettings: {
-        [compName: string]: {
-            [attribute: string]: Value;
-        };
-    };
+    displaySettings: DisplaySettings;
 };
 export type FilterAction = BaseAction & {
     type: 'form';
