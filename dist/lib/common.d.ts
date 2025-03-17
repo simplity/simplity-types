@@ -128,6 +128,11 @@ export type RecordFieldAndDataField = {
      */
     suffix?: string;
     /**
+     * used for validating ranges.
+     * May also be used for rendering date-range instead of two separate date fields.
+     */
+    toField?: string;
+    /**
      * to be used for output fields only.
      * this is the name of a pre-defined formatter
      */

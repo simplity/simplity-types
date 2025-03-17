@@ -1,4 +1,4 @@
-import { Alert, AppController, Button, DataField, FormController, Page, PageComponent, PageController, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, Tabs, Value, Values } from '../..';
+import { Alert, AppController, Button, DataField, FormController, Page, PageComponent, PageController, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, TableViewerController, Tabs, Value, Values } from '../..';
 /**
  * An App-view is the outer most container component inside of which the relevant view components are laid out
  * When an AppView instance is created, it should not have any child layouts in that.
@@ -244,6 +244,11 @@ export interface TabView extends BaseView {
  * It can optionally have the facility to select a subset of rows.
  */
 export interface TableViewerView extends BaseView {
+    /**
+     * A table viewer view MUST create a TableViewerController, by calling fc.newTableViewerController()
+     */
+    readonly twc: TableViewerController;
+    readonly fc: FormController;
     readonly table: TableViewer;
     /**
      * remove all rendered rows. Header, if any, is to be retained.

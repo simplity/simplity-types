@@ -122,20 +122,21 @@ export interface AppController {
   getFn(functionName: string, type?: FunctionType): FunctionDetails;
 
   /**
-   * Get a vew instance for this component as a plugin
+   * Get a vew instance for this component
    * plugins are app-specific view-components corresponding to the standard view-components of simplity.
-   * a design-component can set pluginOptions attribute to invoke this feature
+   * simplity element-factory first checks with this, and will use its own factory if this method returns undefined
    * @param fc
    * @param comp
    * @param maxWidth
-   * @param value
+   * @param value initial value
+   * @returns undefined if this comp is not handled by the app-specific factory.
    */
-  newPluginComponent(
+  newViewComponent(
     fc: FormController | undefined,
     comp: PageComponent,
     maxWidth: number,
     value?: Value
-  ): BaseView;
+  ): BaseView | undefined;
 
   /**
    * get the src (url) for an image. returned value is suitable to set src="" of an <img> tag
@@ -408,4 +409,13 @@ export interface AppController {
    * @param alerts
    */
   showAlerts(alerts: Alert[]): void;
+
+  /**
+   * download the blob as a file
+   * @param blob
+   * @param fileName
+   */
+  download(blob: Blob, fileName: string): void;
+
+  getDefaultPageSize(): number;
 }

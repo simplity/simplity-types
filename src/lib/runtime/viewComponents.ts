@@ -14,6 +14,7 @@ import {
   Tab,
   TableEditor,
   TableViewer,
+  TableViewerController,
   Tabs,
   Value,
   Values,
@@ -334,6 +335,11 @@ export interface TabView extends BaseView {
  * It can optionally have the facility to select a subset of rows.
  */
 export interface TableViewerView extends BaseView {
+  /**
+   * A table viewer view MUST create a TableViewerController, by calling fc.newTableViewerController()
+   */
+  readonly twc: TableViewerController;
+  readonly fc: FormController;
   readonly table: TableViewer;
   /**
    * remove all rendered rows. Header, if any, is to be retained.

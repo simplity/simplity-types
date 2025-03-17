@@ -427,6 +427,16 @@ export type TableViewer = BaseComponent & {
   rowActions?: StringMap<string>;
 
   /**
+   * all rows are rendered if this is not specified.
+   * 'default' means stick to the default page-size set at the app level.
+   */
+  pageSize?: 'default' | number;
+
+  /**
+   * if true, user is provided options to export the data to csv/xlsx etc.. based on the app-specific plugin
+   */
+  exportable?: boolean;
+  /**
    * Panel that provides the configuration parameters for fetching rows for this table.
    * relevant only if configurable="true".
    * If this panel is not provided, a default panel is rendered.
