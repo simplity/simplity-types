@@ -51,7 +51,7 @@ export type ServerResponse = ServiceResponse & {
     sessionId?: string;
 };
 /**
- * requesting a server to serve a service
+ * Data structure that has the details to request the server to serve a service
  */
 export type ServerRequest = {
     service: string;

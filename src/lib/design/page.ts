@@ -10,19 +10,19 @@
  *
  */
 import {
-  FormOperation,
-  SortBy,
-  StringMap,
-  VisualWidth,
-  Values,
-  Value,
   BaseView,
-  ValueRenderingDetails,
+  FilterCondition,
   FormController,
+  FormOperation,
+  NavigationOptions,
   OptionalOf,
   RecordFieldAndDataField,
-  NavigationOptions,
-  FilterCondition,
+  SortBy,
+  StringMap,
+  Value,
+  ValueRenderingDetails,
+  Values,
+  VisualWidth,
 } from '../..';
 /**
  * basic attributes of a Page.
@@ -217,6 +217,7 @@ export type ComponentType =
   | 'chart'
   | 'field'
   | 'panel'
+  | 'range'
   | 'referred'
   | 'static'
   | 'tabs'
@@ -229,6 +230,7 @@ export type PageComponent =
   | ButtonPanel
   | Chart
   | DataField
+  | RangePanel
   | ReferredField
   | Panel
   | StaticComp
@@ -242,7 +244,12 @@ export type PageComponent =
  */
 export type ContainerComponent = Panel | Tabs | Tab;
 
-export type LeafComponent = DataField | Button | StaticComp | ReferredField;
+export type LeafComponent =
+  | DataField
+  | Button
+  | StaticComp
+  | ReferredField
+  | RangePanel;
 
 /**
  * meta data for a button
@@ -253,6 +260,9 @@ export type Button = BaseComponent & {
   label?: string;
   icon?: string;
   tooltip?: string;
+  /**
+   * should this button be enabled only when the form switches certain state?
+   */
   enableWhen?: 'error' | 'valid' | 'rowsSelected' | 'dirty';
   /**
    * additional parameters specific to this button
@@ -274,6 +284,7 @@ export type ReferredField = BaseComponent & {
 
 /**
  * pre-defined panel variants. App-specific variants can be added using templateType instead of panelType
+ * outline and flex are for different type of rendering
  */
 export type PanelType = 'outline' | 'flex';
 /**
@@ -282,6 +293,16 @@ export type PanelType = 'outline' | 'flex';
 export type DataField = BaseComponent & {
   compType: 'field';
 } & FieldAttributes;
+
+/**
+ * Primarily designed to render date-range fields
+ *
+ */
+export type RangePanel = BaseComponent & {
+  compType: 'range';
+  fromField: DataField | ReferredField;
+  toField: DataField | ReferredField;
+};
 
 export type Panel = BaseComponent & {
   compType: 'panel';

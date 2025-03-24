@@ -55,6 +55,6 @@ export type ServerResponse = ServiceResponse & {
 };
 
 /**
- * requesting a server to serve a service
+ * Data structure that has the details to request the server to serve a service
  */
 export type ServerRequest = { service: string; sessionId?: string; data?: Vo };

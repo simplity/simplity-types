@@ -175,7 +175,7 @@ type OnlyMeta = {
     serviceSpecs?: StringMap<ServiceSpec>;
 };
 /**
- * As per our current design, Only purpose of Design is to feed into runtime
+ * As per our current design, the only purpose of Design is to feed into runtime.
  * In other words, runtime is a superset of design-time.
  * Hence this is to be empty
  */

@@ -392,15 +392,15 @@ export type Value = string | number | boolean;
 export type ValueArray = string[] | number[] | boolean[];
 
 /**
- * name-value pairs
+ * name-value pairs of primitive values
  */
 export type Values = StringMap<Value>;
 
 export type AnyValue = Value | Values | ValueArray | Values[];
 
 /**
- * generic data-structure that is used to get data from the server.
- * Note that Value[] is not allowed.
+ * Generic data structure that can represent arbitrary data organization inside of an object-structure.
+ * That is, it is an object with name-value pairs. The value can be either a primitive value
  */
 export type Vo = {
   [key: string]: AnyValue | Vo | Vo[];

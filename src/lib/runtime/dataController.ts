@@ -1,19 +1,19 @@
 import {
-  Value,
-  Vo,
-  PageController,
-  Values,
-  FilterCondition,
-  SortBy,
-  Panel,
-  Form,
-  EventDetails,
+  BaseView,
   DetailedMessage,
-  StringMap,
+  EventDetails,
   EventName,
+  FilterCondition,
+  Form,
+  PageController,
+  Panel,
+  SortBy,
+  StringMap,
   TableEditorView,
   TableViewerView,
-  BaseView,
+  Value,
+  Values,
+  Vo,
 } from '../..';
 
 /**
@@ -62,6 +62,10 @@ export interface DataController {
    */
   getData(): Vo | Vo[];
 
+  /**
+   * did the user edit any value in this form?
+   */
+  isModified(): boolean;
   /**
    * editable table must over-ride this
    */

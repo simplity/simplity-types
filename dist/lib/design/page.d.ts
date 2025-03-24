@@ -9,7 +9,7 @@
  * This is like the .html file that specifies all the attributes of the DOM.
  *
  */
-import { FormOperation, SortBy, StringMap, VisualWidth, Values, Value, BaseView, ValueRenderingDetails, FormController, OptionalOf, RecordFieldAndDataField, NavigationOptions, FilterCondition } from '../..';
+import { BaseView, FilterCondition, FormController, FormOperation, NavigationOptions, OptionalOf, RecordFieldAndDataField, SortBy, StringMap, Value, ValueRenderingDetails, Values, VisualWidth } from '../..';
 /**
  * basic attributes of a Page.
  * This type-alias is created to re-use the base attributes for PageAlterations
@@ -195,16 +195,16 @@ type BaseComponent = {
      */
     pluginOptions?: StringMap<any>;
 };
-export type ComponentType = 'button' | 'buttonPanel' | 'chart' | 'field' | 'panel' | 'referred' | 'static' | 'tabs' | 'table';
+export type ComponentType = 'button' | 'buttonPanel' | 'chart' | 'field' | 'panel' | 'range' | 'referred' | 'static' | 'tabs' | 'table';
 /**
  * a visual component of a page
  */
-export type PageComponent = Button | ButtonPanel | Chart | DataField | ReferredField | Panel | StaticComp | TableViewer | TableEditor | Tabs | Tab;
+export type PageComponent = Button | ButtonPanel | Chart | DataField | RangePanel | ReferredField | Panel | StaticComp | TableViewer | TableEditor | Tabs | Tab;
 /**
  * subset of page visual components that just act as containers for their child components
  */
 export type ContainerComponent = Panel | Tabs | Tab;
-export type LeafComponent = DataField | Button | StaticComp | ReferredField;
+export type LeafComponent = DataField | Button | StaticComp | ReferredField | RangePanel;
 /**
  * meta data for a button
  */
@@ -214,6 +214,9 @@ export type Button = BaseComponent & {
     label?: string;
     icon?: string;
     tooltip?: string;
+    /**
+     * should this button be enabled only when the form switches certain state?
+     */
     enableWhen?: 'error' | 'valid' | 'rowsSelected' | 'dirty';
     /**
      * additional parameters specific to this button
@@ -233,6 +236,7 @@ export type ReferredField = BaseComponent & {
 } & OptionalOf<FieldAttributes>;
 /**
  * pre-defined panel variants. App-specific variants can be added using templateType instead of panelType
+ * outline and flex are for different type of rendering
  */
 export type PanelType = 'outline' | 'flex';
 /**
@@ -241,6 +245,15 @@ export type PanelType = 'outline' | 'flex';
 export type DataField = BaseComponent & {
     compType: 'field';
 } & FieldAttributes;
+/**
+ * Primarily designed to render date-range fields
+ *
+ */
+export type RangePanel = BaseComponent & {
+    compType: 'range';
+    fromField: DataField | ReferredField;
+    toField: DataField | ReferredField;
+};
 export type Panel = BaseComponent & {
     compType: 'panel';
     /**

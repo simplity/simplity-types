@@ -1,4 +1,4 @@
-import { Value, Vo, PageController, Values, FilterCondition, SortBy, Panel, Form, EventDetails, DetailedMessage, StringMap, EventName, TableEditorView, TableViewerView, BaseView } from '../..';
+import { BaseView, DetailedMessage, EventDetails, EventName, FilterCondition, Form, PageController, Panel, SortBy, StringMap, TableEditorView, TableViewerView, Value, Values, Vo } from '../..';
 /**
  * base interface to be implemented by the form/table controllers
  */
@@ -40,6 +40,10 @@ export interface DataController {
      * get the data. For a non-editable controller, this returns the data that was received or set
      */
     getData(): Vo | Vo[];
+    /**
+     * did the user edit any value in this form?
+     */
+    isModified(): boolean;
     /**
      * editable table must over-ride this
      */
