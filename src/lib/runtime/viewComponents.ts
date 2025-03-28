@@ -217,6 +217,7 @@ export interface PageView {
 export interface BaseView {
   readonly name: string;
   readonly comp: PageComponent;
+  readonly initInfo: StringMap<unknown>;
   readonly ac: AppController;
   readonly pc: PageController;
 
