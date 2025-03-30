@@ -575,6 +575,16 @@ type BaseAction = {
    * should the UX be disabled till the service response is received?
    */
   toDisableUx?: boolean;
+  /**
+   * message to be rendered as success if the action succeeds
+   * app should provide text for this id
+   */
+  successMessageId?: string;
+  /**
+   * message to be rendered as error if the action fails
+   * app should provide text for this id
+   */
+  failureMessageId?: string;
 };
 
 /**
