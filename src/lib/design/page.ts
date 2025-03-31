@@ -216,6 +216,7 @@ export type ComponentType =
   | 'buttonPanel'
   | 'chart'
   | 'field'
+  | 'multi-report'
   | 'panel'
   | 'range'
   | 'referred'
@@ -230,9 +231,10 @@ export type PageComponent =
   | ButtonPanel
   | Chart
   | DataField
+  | MultiReportPanel
+  | Panel
   | RangePanel
   | ReferredField
-  | Panel
   | StaticComp
   | TableViewer
   | TableEditor
@@ -242,7 +244,7 @@ export type PageComponent =
 /**
  * subset of page visual components that just act as containers for their child components
  */
-export type ContainerComponent = Panel | Tabs | Tab;
+export type ContainerComponent = MultiReportPanel | Panel | Tabs | Tab;
 
 export type LeafComponent =
   | DataField
@@ -302,6 +304,14 @@ export type RangePanel = BaseComponent & {
   compType: 'range';
   fromField: DataField | ReferredField;
   toField: DataField | ReferredField;
+};
+
+export type MultiReportPanel = BaseComponent & {
+  compType: 'multi-report';
+  /**
+   * each child must be a tableViewer. At least two children expected
+   */
+  children: TableViewer[];
 };
 
 export type Panel = BaseComponent & {
