@@ -1,4 +1,4 @@
-import { Alert, AppController, Button, DataField, FormController, Page, PageComponent, PageController, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, TableViewerController, Tabs, Value, Values } from '../..';
+import { Alert, AppController, Button, DataField, FormController, MultiReportPanel, Page, PageComponent, PageController, Panel, SimpleList, StaticComp, StringMap, Tab, TableEditor, TableViewer, TableViewerController, Tabs, Value, Values } from '../..';
 /**
  * An App-view is the outer most container component inside of which the relevant view components are laid out
  * When an AppView instance is created, it should not have any child layouts in that.
@@ -234,6 +234,37 @@ export interface PanelView extends BaseView {
      */
     readonly childFc?: FormController;
 }
+/**
+ * Objective of this panel is to decide and render a report at run time, rather than render all of them at design time, and then hide/show
+ * at least two child-reports are expected.
+ * No report is rendered at the time of loading the page.
+ * Only when the data is received, the relevant panel is initially rendered, and then bound to data.
+ * The current report, if any, is destroyed.
+ *
+ */
+export interface MultiReportPanelView extends BaseView {
+    readonly panel: MultiReportPanel;
+    currentReport?: CurrentReport;
+    /**
+     * remove all rendered rows. Header, if any, is to be retained.
+     */
+    reset(): void;
+    /**
+     * render required rows for the incoming data-rows.
+     * @param data
+     * @param selectedNames if this is a configurable table, then this is required
+     */
+    renderData(reportName: string, data: Values[], selectedNames?: string[]): void;
+}
+/**
+ * current report that is rendered in a multi-report panel
+ */
+export type CurrentReport = {
+    name: string;
+    twc: TableViewerController;
+    fc: FormController;
+    table: TableViewer;
+};
 /**
  * Tab is a panel that is a direct child of a tabsGroup.
  */

@@ -1,4 +1,4 @@
-import { FunctionDetails, FunctionType, ListSource, StringMap, Value } from './common';
+import { FunctionDetails, FunctionType, ListSource, StringMap, Value, ValueFormatter } from './common';
 import { Layout, MenuItem, Module } from './design/layout';
 import { ValueList } from './design/list';
 import { Page, PageComponent } from './design/page';
@@ -105,6 +105,10 @@ type CommonOnes = {
      * validation schemas
      */
     valueSchemas?: StringMap<ValueSchema>;
+    /**
+     * value formatters
+     */
+    valueFormatters?: StringMap<ValueFormatter>;
     /**
      * all the html source/text for the view components
      */

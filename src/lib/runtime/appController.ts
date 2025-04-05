@@ -21,6 +21,8 @@ import {
   BaseView,
   FormController,
   Value,
+  ValueFormatter,
+  FormattedValue,
 } from '../..';
 
 /**
@@ -64,7 +66,7 @@ export interface AppController {
   /**
    *
    * @param id unique id for this menu item
-   * @returns menu detailed
+   * @returns menu item
    * @throws Error in case the menu does not exist
    */
   getMenu(id: string): MenuItem;
@@ -72,10 +74,18 @@ export interface AppController {
   /**
    *
    * @param name unique name of  the value schema
-   * @returns value schema detailed
+   * @returns value schema details
    * @throws Error in case the value-schema does not exist
    */
   getValueSchema(name: string): ValueSchema;
+
+  /**
+   *
+   * @param name unique name of  the value formatter
+   * @returns value formatter details
+   * @throws Error in case the value-formatter does not exist
+   */
+  getValueFormatter(name: string): ValueFormatter;
 
   /**
    *
@@ -313,6 +323,13 @@ export interface AppController {
    * @param textValue
    */
   validateType(valueType: ValueType, textValue: string): ValueValidationResult;
+
+  /**
+   * format the value as per the formatter.
+   * @param formatterName
+   * @param value should be non-empty
+   */
+  formatValue(formatterName: string, value: Value): FormattedValue;
 
   /**
    * designed specifically for a module. Returns true if at least one of the menu-items in a module is allowed

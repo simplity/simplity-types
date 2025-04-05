@@ -4,6 +4,7 @@ import {
   ListSource,
   StringMap,
   Value,
+  ValueFormatter,
 } from './common';
 import { Layout, MenuItem, Module } from './design/layout';
 import { ValueList } from './design/list';
@@ -128,6 +129,11 @@ type CommonOnes = {
    * validation schemas
    */
   valueSchemas?: StringMap<ValueSchema>;
+
+  /**
+   * value formatters
+   */
+  valueFormatters?: StringMap<ValueFormatter>;
 
   /**
    * all the html source/text for the view components

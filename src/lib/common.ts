@@ -58,10 +58,6 @@ export type RecordFieldAndDataField = {
   filterable?: boolean;
 
   /**
-   * any formatting requirements for this field when rendering teh value as output?
-   */
-  formattingFn?: string;
-  /**
    * used by the client-side for rendering a tabular list of rows. Typically, ids are hidden,
    */
   hideInList?: boolean;
@@ -93,9 +89,9 @@ export type RecordFieldAndDataField = {
    */
   label?: string;
   /**
-   * attributes for rendering the label
+   * formatter
    */
-  labelAttributes?: Markups;
+  valueFormatter?: string;
 
   /**
    * if the list of values is a keyed-list and the key value is to be taken from another field.
@@ -163,11 +159,6 @@ export type RecordFieldAndDataField = {
    * May also be used for rendering date-range instead of two separate date fields.
    */
   toField?: string;
-  /**
-   * to be used for output fields only.
-   * this is the name of a pre-defined formatter
-   */
-  valueFormatter?: ValueFormatter;
 
   /**
    * how to validate the value of this field?
@@ -262,16 +253,6 @@ export type ResponseFunction = (
 export type FormValidationFunction = (
   fc: FormController
 ) => [{ fieldName: string; message: string }] | undefined;
-
-/**
- * function to format the value for output.
- * It can also set the mark-up attributes for the view-element
- * @param value
- */
-export type FormatterFunction = (
-  value: Value,
-  row: Values
-) => { value: string; markups: Markups };
 
 /**
  * function to be called to initialize a view-component after it is created by the view-layer of simplity.
@@ -406,49 +387,121 @@ export type Vo = {
   [key: string]: AnyValue | Vo | Vo[];
 };
 
-export type ValueFormatter = {
+export type BaseFormatter = {
+  name: string;
+
   /**
-   * for text
+   * mark-ups are value-markup pairs.
+   * markup, in an html client, translates to a data-* attribute being set for the enclosing element
+   * for a numeric/date type, the value may start with '<' or '>' followed by the value
+   * for a text field it may start and end with '/', in which case, it is assumed to be
+   * '' matches with undefined, while * matches for anything. It does not make sense to have any entries after a * entry
+   * e.g. [['<0', 'negative'], ['>1000', 'high'], ['*' , 'normal']]
    */
-  casing?: CaseConverter;
+  markups?: [string, string][];
+};
+/**
+ * format a boolean for output
+ */
+export type BooleanFormatter = BaseFormatter & {
+  type: 'boolean';
+  trueValue: string;
+  falseValue: string;
+  unknownValue: string;
+};
+
+/**
+ * format a number for output
+ */
+export type NumberFormatter = BaseFormatter & {
+  type: 'number';
   /**
    * e.g. to output 001 instead of 1
    */
   minDigits?: number;
   /**
-   *million -> comma for every three digits
-   crore -> indian commas
-   xxx-xx-xxxx- -> for text formatting with special characters. anything other than x is a formatting character
-   yyyy-mm-dd etc.. case insensitive. yy, yyyy, mm, dd, mmm (for JAN etc..) have fixed meaning. others are separators
+   * defaults to the one specified in the valueType or 0
    */
-  separators?: 'million' | 'crore' | string;
+  nbrDecimals?: number;
   /**
-   * 1000 means up to nearest 1000
+   * 12,25,000 or 1,225,000
    */
-  roundUpTo?: number;
+  commas?: 'lakhs' | 'millions';
+  /**
+   * e.g. label says In crores, then the values are shown to nearest 1000
+   */
+  toNearest?: 'thousands' | 'lakhs' | 'millions' | 'crores';
 };
+
+/**
+ * format a date for output
+ */
+export type DateFormatter = BaseFormatter & {
+  type: 'date';
+  //javascript standard date formatting string
+  format: string;
+};
+
+/**
+ * format a timestamp for output
+ */
+export type TimestampFormatter = BaseFormatter & {
+  type: 'timestamp';
+  /**
+   * defaults to locale of the client machine.
+   * standard locale string
+   */
+  locale?: string;
+  //defaults to the format associated with the locale
+  format?: string;
+};
+
+/**
+ * format a text for output
+ */
+export type TextFormatter = BaseFormatter & {
+  type: 'text';
+  /**
+   * x is substituted, while everything else is reproduced as it is
+   * like xxx-xx-xxx.
+   */
+  format: string;
+  /**
+   * if you need to 'x-out' characters, then specify your choice of variable character
+   */
+  varchar?: string;
+};
+
+/**
+ * If your need requires a custom function for formatting the value.
+ */
+export type CustomFormatter = {
+  type: 'custom';
+  /**
+   * name of the formatter function provided by the app
+   */
+  function: string;
+};
+
+export type ValueFormatter =
+  | BooleanFormatter
+  | CustomFormatter
+  | DateFormatter
+  | NumberFormatter
+  | TextFormatter
+  | TimestampFormatter;
+
 /**
  * case may be converted to upper, lower.
  * A field name like "fieldName" or "FieldName" or "field_name" is converted to "Field Name"
  */
 export type CaseConverter = 'UPPER' | 'lower' | 'label';
-
+export type FormattedValue = { value: string; markups?: [string, Value][] };
 /**
  * function that formats a value to text format and provides rendering attributes to be set
  * used by the client to mark-up a value being rendered.
  */
-export type FormatterFn = (value: Value) => {
-  value: string;
-  attrs?: Markups;
-};
-
-/**
- * Markup attributes are name-value pairs.
- * name is the name of a mark-up, like "highlight", "below-range" etc..
- * a mark-up is set as a data-* attribute for the element.
- * e.g. data-highlight of data-align=right
- */
-export type Markups = StringMap<string>;
+export type FormatterFunction = (value: Value) => FormattedValue;
 
 /**
  * how to render a value, generally as a column in a table, but also can be used to render as a field
@@ -467,17 +520,9 @@ export type ValueRenderingDetails = {
    */
   valueType: ValueType;
   /**
-   * attributes data-* to be set for the header cells. This is the technique we use to associate effective style for the cell
-   */
-  labelAttributes?: Markups;
-  /**
    * way to render the value. this is the name of a pre-defined formatter
    */
-  valueFormatter?: ValueFormatter;
-  /**
-   * name of a pre-defined formatter-function
-   */
-  formattingFn?: string;
+  valueFormatter?: string;
 
   /**
    * action to be taken when user clicks on this value

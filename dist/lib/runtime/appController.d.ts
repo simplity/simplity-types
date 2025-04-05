@@ -1,4 +1,4 @@
-import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, NavigationOptions, Alert, ValueSchema, PageComponent, BaseView, FormController, Value } from '../..';
+import { Values, Vo, Layout, MenuItem, Module, Page, Form, PanelView, ServiceResponse, StringMap, FunctionDetails, ValueValidationResult, SimpleList, FunctionType, ValueType, NavigationOptions, Alert, ValueSchema, PageComponent, BaseView, FormController, Value, ValueFormatter, FormattedValue } from '../..';
 /**
  * App controller provides centralized services for all its components
  * This run-time component is built using all the app-components and scripts/functions of the app
@@ -36,17 +36,24 @@ export interface AppController {
     /**
      *
      * @param id unique id for this menu item
-     * @returns menu detailed
+     * @returns menu item
      * @throws Error in case the menu does not exist
      */
     getMenu(id: string): MenuItem;
     /**
      *
      * @param name unique name of  the value schema
-     * @returns value schema detailed
+     * @returns value schema details
      * @throws Error in case the value-schema does not exist
      */
     getValueSchema(name: string): ValueSchema;
+    /**
+     *
+     * @param name unique name of  the value formatter
+     * @returns value formatter details
+     * @throws Error in case the value-formatter does not exist
+     */
+    getValueFormatter(name: string): ValueFormatter;
     /**
      *
      * @param id unique id for this menu item
@@ -232,6 +239,12 @@ export interface AppController {
      * @param textValue
      */
     validateType(valueType: ValueType, textValue: string): ValueValidationResult;
+    /**
+     * format the value as per the formatter.
+     * @param formatterName
+     * @param value should be non-empty
+     */
+    formatValue(formatterName: string, value: Value): FormattedValue;
     /**
      * designed specifically for a module. Returns true if at least one of the menu-items in a module is allowed
      * @param ids
