@@ -1,4 +1,4 @@
-import { AppController, BaseView, DetailedMessage, FormController, KeyedList, PageController, ServiceResponse, SimpleList, ValueType } from '..';
+import { AppController, BaseView, Button, DetailedMessage, FormController, KeyedList, PageController, ServiceResponse, SimpleList, StaticComp, ValueType } from '..';
 /**
  * entity string index
  */
@@ -440,7 +440,7 @@ export type FormatterFunction = (value: Value) => FormattedValue;
 /**
  * how to render a value, generally as a column in a table, but also can be used to render as a field
  */
-export type ValueRenderingDetails = {
+export type ColumnDetails = {
     /**
      * name by which the values are available in a row
      */
@@ -458,9 +458,18 @@ export type ValueRenderingDetails = {
      */
     valueFormatter?: string;
     /**
+     * In case the value is internal, and a suitable label/text is to be rendered.
+     * On the lines of a drop-down field. Map of internal value to the text to be rendered
+     */
+    valueList?: StringMap<string>;
+    /**
      * action to be taken when user clicks on this value
      */
     onClick?: string;
+    /**
+     * very special case where this is not a field, but is a static view-component to be rendered, not a text to be rendered
+     */
+    comp?: StaticComp | Button;
 };
 export type VisualWidth = number;
 /**

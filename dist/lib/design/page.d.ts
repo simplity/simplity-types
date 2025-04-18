@@ -9,7 +9,7 @@
  * This is like the .html file that specifies all the attributes of the DOM.
  *
  */
-import { BaseView, FilterCondition, FormController, FormOperation, NavigationOptions, OptionalOf, RecordFieldAndDataField, SortBy, StringMap, Value, ValueRenderingDetails, Values, VisualWidth } from '../..';
+import { BaseView, FilterCondition, FormController, FormOperation, NavigationOptions, OptionalOf, RecordFieldAndDataField, SortBy, StringMap, Value, ColumnDetails, Values, VisualWidth } from '../..';
 /**
  * basic attributes of a Page.
  * This type-alias is created to re-use the base attributes for PageAlterations
@@ -390,7 +390,7 @@ export type TableViewer = BaseComponent & {
      * since the columns are meant for read/view, it is more appropriate to specify how the column values are to be rendered.
      * It is an error to specify both children and columns
      */
-    columns?: ValueRenderingDetails[];
+    columns?: ColumnDetails[];
     /**
      * action buttons. May be for the selected rows or independent of the rows
      */
@@ -484,7 +484,7 @@ export type Tab = Panel & {
     icon?: string;
 };
 export type ChartType = 'pie';
-export type ChartField = ValueRenderingDetails & {
+export type ChartField = ColumnDetails & {
     valueType: 'integer' | 'decimal';
     /**
      * valid color name as per standard CSS.

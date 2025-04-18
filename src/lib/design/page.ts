@@ -20,7 +20,7 @@ import {
   SortBy,
   StringMap,
   Value,
-  ValueRenderingDetails,
+  ColumnDetails,
   Values,
   VisualWidth,
 } from '../..';
@@ -447,7 +447,7 @@ export type TableViewer = BaseComponent & {
    * since the columns are meant for read/view, it is more appropriate to specify how the column values are to be rendered.
    * It is an error to specify both children and columns
    */
-  columns?: ValueRenderingDetails[];
+  columns?: ColumnDetails[];
   /**
    * action buttons. May be for the selected rows or independent of the rows
    */
@@ -546,7 +546,7 @@ export type Tab = Panel & {
 };
 
 export type ChartType = 'pie';
-export type ChartField = ValueRenderingDetails & {
+export type ChartField = ColumnDetails & {
   valueType: 'integer' | 'decimal';
   /**
    * valid color name as per standard CSS.
