@@ -124,21 +124,14 @@ export type RecordFieldAndDataField = {
      */
     suffix?: string;
     /**
+     * What values are allowed for this field?
+     */
+    valueSchema: string;
+    /**
      * used for validating ranges.
      * May also be used for rendering date-range instead of two separate date fields.
      */
     toField?: string;
-    /**
-     * how to validate the value of this field?
-     * optional for fields that are not coming from an external source.
-     * however, it also serves as a good documentation about the expected range of values.
-     * hence it is highly recommended that this is specified.
-     */
-    valueSchema?: string;
-    /**
-     * value type 'boolean' 'text' 'integer' etc..
-     */
-    valueType: ValueType;
     /**
      * used by the client-side for rendering
      */

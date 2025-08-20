@@ -1,4 +1,4 @@
-import { RecordFieldAndDataField } from '../common';
+import { RecordFieldAndDataField, SortBy } from '../common';
 
 /**
  * Record is an ordered set of data elements
@@ -38,7 +38,7 @@ type InterFieldValidationType =
    */
   | 'different'
   /**
-   * one and only of the two must have a value
+   * one and only one of the two must have a value
    */
   | 'oneOf'
   /**
@@ -73,6 +73,10 @@ type BaseRecord = {
    */
   nameInDb?: string;
   /**
+   * whether the database table associated with this record uses audit fields
+   */
+  usesAuditFields?: boolean;
+  /**
    * name of the function that validates an instance of data.
    * this function must follow the prescribed API for such a function, and is made available at run time.
    * This function should be of type FormValidationFunction with scope set to 'form'
@@ -104,27 +108,18 @@ type BaseRecord = {
    */
   interFieldValidations?: InterFieldValidation[];
   /**
-   * related records are for documentation purpose as of now.
+   * fields that together uniquely identify a record, other than the primary key. There may be multiple such unique field-sets.
    */
-  relatedRecords?: RelatedRecord[];
-};
-
-export type RelatedRecord = {
+  uniqueFields?: UniqueFields[];
   /**
-   * name of the other field
+   * Other records to on which this records depends on. For example a parent record.
+   * Note that the parent is to be specified as a linked record to the child record, and not the other way round.
    */
-  name: string;
+  linkedRecords?: LinkedRecord[];
   /**
-   * Relationship of this record with another.
-   * We have no included many-to-many because it is generally not useful that way.
-   * In most cases, many-to-many is through a third record.
-   * For example A->B (many-to-many) means A->C(many-to-one) and B->C(many-to-one)
+   * fields by which the records are sorted
    */
-  type: 'one-to-one' | 'many-to-one' | 'one-to-many';
-  /**
-   * field name from this record, field name from the relatedRecord
-   */
-  matchedFields: [string, string];
+  sortBy?: SortBy[];
 };
 
 export type SimpleRecord = BaseRecord & {
@@ -134,6 +129,34 @@ export type SimpleRecord = BaseRecord & {
    * in certain contexts, the order is important Hence this is an array
    */
   fields: Field[];
+  validations?: InterFieldValidation[];
+  businessValidations?: BusinessValidation[];
+};
+
+export type UniqueFields = {
+  /**
+   * description of the unique constraint
+   */
+  description?: string;
+  /**
+   * One or more fields that are to be unique in combination across all rows
+   */
+  fields: string[];
+};
+
+export type LinkedRecord = {
+  /**
+   * description of the foreign key constraint
+   */
+  description?: string;
+  /**
+   * name of the record that this is a foreign key to
+   */
+  recordName: string;
+  /**
+   * fields in this record that are linked to the other record
+   */
+  links: { field: string; linkedField: string }[];
 };
 
 /**
@@ -209,6 +232,17 @@ export type InterFieldValidation = {
   onlyIfFieldValueEquals?: 'string';
 };
 
+export type BusinessValidation = {
+  /**
+   * name of the function that implements the business validation logic.
+   * This function must follow the prescribed API for such a function, and is made available at run time.
+   */
+  functionName: string;
+  /**
+   * description of the business validation
+   */
+  description?: string;
+};
 /**
  * operations on a record/form/data-set. Traditionally called CRUD for Create, Read, Update,Delete
  */

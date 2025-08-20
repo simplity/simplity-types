@@ -7,17 +7,17 @@ export const _filters = {
         {
             name: 'name',
             fieldType: 'requiredData',
-            valueType: 'text',
+            valueSchema: 'text',
             label: 'Name',
         },
         {
             name: 'comparator',
             fieldType: 'requiredData',
-            valueType: 'text',
+            valueSchema: 'text',
             label: 'Condition',
         },
-        { name: 'value', fieldType: 'requiredData', valueType: 'text' },
-        { name: 'toValue', fieldType: 'optionalData', valueType: 'text' },
+        { name: 'value', fieldType: 'requiredData', valueSchema: 'text' },
+        { name: 'toValue', fieldType: 'optionalData', valueSchema: 'text' },
     ],
 };
 //# sourceMappingURL=_filters.js.map
