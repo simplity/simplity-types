@@ -4,30 +4,26 @@ import {
   MenuItem,
   Module,
   Page,
-  ServiceResponse,
   ServiceSpec,
   Sql,
   PageTemplate,
   ValueSchema,
   PageAlteration,
-  Form,
   ListSource,
   FunctionType,
+  Record,
+  ValueList,
 } from '../..';
 
 /**
  *   attributes/components that are used as-they-are at run time
  */
-type AppCommonOnes = {
+export type CommonAppAttributes = {
   name: string;
   version: string;
   date: string;
 
   description: string;
-  /**
-   *  app-specific configuration parameters that may used by app-specific functions
-   */
-  appParams?: { [key: string]: any };
 
   /**
    * default max length to be used for a text-value-schema with no max specified
@@ -42,34 +38,8 @@ type AppCommonOnes = {
    * simplity agent invokes the logout service, but does not expect any response back.
    */
   logoutServiceName?: string;
-  /**
-   * URL for the server. All requests are sent to this url.
-   * Only local resources are used if the url is not set
-   */
-  serverUrl?: string;
-  /**
-   * e.g. ./assets/images/
-   */
-  imageBasePath: string;
 
-  /**
-   * layout to render on load
-   */
-  startingLayout: string;
-
-  /**
-   * module to be selected by default on loading
-   */
-  startingModule: string;
-
-  /**
-   * ready responses are cached responses by serviceNames,  by the client.
-   * we may also decide to shift them to the server side on a need basis.
-   * this feature is useful during development and for demo purposes
-   * if a ready response is available, the response is used instead of calling a service
-   */
-  cachedResponses?: StringMap<ServiceResponse>;
-
+  /////////////// Design Components
   /**
    * page layouts. The way the page as the user views is laid out from its components
    */
@@ -89,23 +59,11 @@ type AppCommonOnes = {
    * modules of the app. It's a logical grouping of pages
    */
   modules?: StringMap<Module>;
-  /**
-   * validation schemas
-   */
-  valueSchemas?: StringMap<ValueSchema>;
 
   /**
    * all the html source/text for the view components
    */
   htmls?: StringMap<string>;
-};
-
-/**
- * Meta data that the app-designer creates.
- * Some are used to generate other artifacts.
- * Some are used as they are in the run-time system.
- */
-export type AppMetaData = AppCommonOnes & {
   /**
    * how to get list of name-value pairs for drop-down boxes?
    * run-time list sources are used to generate run-time components
@@ -117,6 +75,41 @@ export type AppMetaData = AppCommonOnes & {
    * pages that are hand-coded by the app-designer, without using any template
    */
   pages?: StringMap<Page>;
+};
+/**
+ *   attributes/components that are used as-they-are at run time
+ */
+export type AppDesign = CommonAppAttributes & {
+  /**
+   * default max length to be used for a text-value-schema with no max specified
+   */
+  maxLengthForTextField: number;
+
+  /**
+   * if this app is an multi-tenant app.
+   */
+  tenantFieldName?: string;
+  /**
+   * column name in db tables for the tenant column
+   */
+  tenantNameInDb?: string;
+  /**
+   * server-side. Used for generating java classes
+   */
+  javaRootPackageName?: string;
+
+  records: StringMap<Record>;
+  /**
+   * values lists consist of both design-time and run-time.
+   * server needs all of them, while the client doesn't keep track of the run-time ones.
+   * json file is created for the server, and listSources.ts file is generated for the client
+   */
+  valueLists: StringMap<ValueList>;
+  /**
+   * validation schemas
+   */
+  valueSchemas: StringMap<ValueSchema>;
+
   /**
    * page templates are short-cuts to generate a standard (predefined-format) page.
    */
@@ -133,19 +126,6 @@ export type AppMetaData = AppCommonOnes & {
   sqls?: StringMap<Sql>;
 
   /**
-   * if this app is an multi-tenant app.
-   */
-  tenantFieldName?: string;
-  /**
-   * column name in db tables for the tenant column
-   */
-  tenantNameInDb?: string;
-  /**
-   * server-side. Used for generating java classes
-   */
-  javaRootPackageName?: string;
-
-  /**
    * all functions defined for this app. Note that the function name has to be unique across all pages.
    * an App may follow naming convention like pageName.functionName if the app is quite large
    */
@@ -155,13 +135,4 @@ export type AppMetaData = AppCommonOnes & {
    * API (input-output) specification for all the services that are exposed by the server-app for the client-app
    */
   serviceSpecs?: StringMap<ServiceSpec>;
-};
-export type AppDesign = AppMetaData & {
-  /**
-  /**
-   * forms that are generated from records
-   */
-  forms?: StringMap<Form>;
-
-  ///////////// templating technique to generate stereo-type design components
 };

@@ -323,3 +323,20 @@ export interface TabsView extends BaseView {
      */
     setTabErrorStatus(errors: boolean[]): void;
 }
+/**
+ * a function that creates an instance of a View-Component for the page-component that is supplied as input.
+ * this is an app-specific implementation of the corresponding view-component.
+ * This function is used instead of the standard simplity function if a page-component specifies pluginOption attribute
+ */
+export type ViewComponentFactory = {
+    /**
+     * an option to create an app-specific view component for this component.
+     *
+     * @param fc
+     * @param comp
+     * @param maxWidth
+     * @param value
+     * @returns an app-specific view component instance, or undefined
+     */
+    newViewComponent(fc: FormController | undefined, comp: PageComponent, maxWidth: number, value?: Value): BaseView | undefined;
+};

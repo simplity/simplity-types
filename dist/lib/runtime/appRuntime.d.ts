@@ -1,0 +1,221 @@
+import { Service, AlertType, StringMap, Value, AppController, KeyedList, SimpleList, ValueList, FormController, PageController, DetailedMessage, ServiceResponse, Vo, Form, ViewComponentFactory, AppCommonAttributes, FormatterFunction, ViewInitFunction } from '../..';
+export type AppRuntime = AppCommonAttributes & {
+    /**
+     * URL for the server. All requests are sent to this url.
+     * Only local resources are used if the url is not set
+     */
+    serverUrl?: string;
+    /**
+     *  app-specific configuration parameters that may be used by app-specific functions
+     */
+    appParams?: StringMap<any>;
+    /**
+     * e.g. ./assets/images/
+     */
+    imageBasePath: string;
+    /**
+     * layout to render on load
+     */
+    startingLayout: string;
+    /**
+     * module to be selected by default on loading
+     */
+    startingModule: string;
+    /**
+     * how to get list of name-value pairs for drop-down boxes?
+     * run-time list sources are used to generate run-time components
+     * design-time list sources are converted as "valueLists"
+     */
+    listSources?: StringMap<ListSource>;
+    /**
+     * forms that are generated from records
+     */
+    forms?: StringMap<Form>;
+    /**
+     * ready responses are cached responses by serviceNames,  by the client.
+     * we may also decide to shift them to the server side on a need basis.
+     * this feature is useful during development and for demo purposes
+     * if a ready response is available, the response is used instead of calling a service
+     */
+    cachedResponses?: StringMap<ServiceResponse>;
+    /**
+     * local lists are cached responses to getList(). Useful during development/demo
+     * this is a run-time concept to override a design component at run time
+     */
+    localLists?: StringMap<ValueList>;
+    /**
+     * local services are used during development as stubs.
+     * a service  that is meant to be served by the server is over-ridden to be served locally on the client instead
+     */
+    localServices?: StringMap<Service>;
+    /**
+     * functions with specs and actual implementations
+     */
+    functionDetails?: StringMap<FunctionDetails>;
+    viewComponentFactory?: ViewComponentFactory;
+};
+/**
+ * A global function that is accessible at the app level.
+ *
+ * @param ac: the app controller
+ * @param params: additional parameters passed to the function
+ * @param msgs array to which the function can add messages that may be passed on to the UX
+ * @returns any. In some situations the return value may also be checked for truthy/falsy to trigger events like onsuccess etc..
+ */
+export type GlobalFunction = (ac: AppController, params: unknown, msgs: DetailedMessage[]) => unknown;
+/**
+ * A function that is to be triggered on some event. This is executed with page as the context.
+ *
+ * @param pc: the page controller used by this page
+ * @param params: optional parameters for this function. If used, this is typically an object with name-value pairs.
+ * onChange and OnChanging event call-back functions receive an object with {fieldName, value, event} attributes
+ * @param msgs array to which the function can add messages that may be passed on to the UX
+ * @returns any. In some situations the return value may also be checked for truthy/falsy to trigger evens like onsuccess etc..
+ */
+export type PageFunction = (pc: PageController, params: unknown, msgs: DetailedMessage[]) => unknown;
+/**
+ * a function that is triggered on events like
+ * onChanged, onChanging, onValueChanged etc..
+ * This is executed with form as the context. function can access only the form controller
+ * (In case the function requires access to page level context, use page)
+ * @param fc controller for this field
+ * @param params   onChange and OnChanging event call-back functions receive an object with {fieldName, value, event} attributes
+ * @param msgs array to which the function can add messages that may be passed on to the UX
+ * @returns any. In some situations the return value may also be checked for truthy/falsy to trigger evens like onsuccess etc..
+ */
+export type FormFunction = (fc: FormController, param: unknown, msgs: DetailedMessage[]) => unknown;
+/**
+ * a function that is triggered just before requesting a service using a ServiceAction.
+ * This is an intercept function that can either modify the payload for the request, or abort the request with an error message.
+ * @param fc controller of the form being submitted. Note that the PageController is accessible from this.
+ * @param payload that accompanies the request.
+ * @param msgs array to which the function should add messages in case the request is to be aborted
+ * @returns true to say OK for the request. false to abort the request.
+ */
+export type RequestFunction = (fc: FormController, payload: Vo | undefined, msgs: DetailedMessage[]) => boolean;
+/**
+ * An intercept function that is triggered after the response is received for an ServiceAction,
+ * but before the serviceResponse is processed by the controller.
+ * @param pc page controller
+ * @param response serviceResponse that may be modified by this function
+ */
+export type ResponseFunction = (pc: PageController, response: ServiceResponse) => void;
+/**
+ * A form validation functions returns an array of messages in case of validation errors, or undefined if there are no errors
+ */
+export type FormValidationFunction = (fc: FormController) => [{
+    fieldName: string;
+    message: string;
+}] | undefined;
+export type FunctionDetails = {
+    type: 'global';
+    fn: GlobalFunction;
+} | {
+    type: 'request';
+    fn: RequestFunction;
+} | {
+    type: 'response';
+    fn: ResponseFunction;
+} | {
+    type: 'page';
+    fn: PageFunction;
+} | {
+    type: 'form';
+    fn: FormFunction | FormValidationFunction;
+} | {
+    type: 'value';
+    fn: ValueValidationFn;
+} | {
+    type: 'format';
+    fn: FormatterFunction;
+} | {
+    type: 'init';
+    fn: ViewInitFunction;
+};
+/**
+ * function type. type alias "FunctionDetails" defines the signature of each of these types
+ */
+export type FunctionType = FunctionDetails['type'];
+/**
+ * status returned by the controller when a function is requested at run time
+ */
+/**
+ * status returned by the controller when a function is requested at run time
+ */
+export type FnStatus = {
+    /**
+     * true if the function was called with success, false in case of any error, like function not defined, or the function threw an exception
+     */
+    allOk: boolean;
+    /**
+     * value returned by the function, if it got executed successfully
+     */
+    returnedValue?: unknown;
+};
+export type AppError = {
+    error: string;
+};
+/**
+ * Error object emitted by a value-schema validator
+ */
+export type SchemaError = {
+    name: string;
+    params?: string[];
+};
+/**
+ * function that validates the supplied value, after parsing itq.
+ */
+export type ValueValidationFn = (value: {
+    value: string;
+}) => ValueValidationResult;
+/**
+ * data-structure returned by a validation function.
+ * value is undefined if the string could not be parsed into the right type
+ */
+export type ValueValidationResult = {
+    /**
+     * NULL_VALUE (and not undefined) if the parsing fails. (refer to getNullValue() method))
+     * parsed value of the right type, if parsing is successful, even of the validation fails.
+     * IMP: should check for messages to know if this value is valid or not.
+     */
+    value?: Value;
+    /**
+     * undefined if the value is valid.
+     * at least one message in the array if the validation fails. (never empty array).
+     * multiple messages possible if the field has multiple validation rules
+     */
+    messages: ValidationMessage[];
+} | {
+    value: Value;
+    messages?: ValidationMessage[];
+};
+export type ValidationMessage = {
+    /**
+     * messages are externalized. run-time environment would get the actual text for this in the desired language
+     */
+    messageId: string;
+    alertType: AlertType;
+    /**
+     * number of parameters should match the parameters embedded in the message
+     */
+    params?: string[];
+};
+/**
+ * defines how the options for a named list is to be sourced at run time.
+ */
+export type ListSource = {
+    name: string;
+    okToCache: boolean;
+    isKeyed: boolean;
+    isRuntime: boolean;
+    /**
+     * relevant if this is not keyed
+     * provided at design time, or cached if allowed
+     */
+    list?: SimpleList;
+    /**
+     * relevant if this is keyed
+     * provided at design time, or cached if allowed
+     */
+    keyedList?: KeyedList;
+};

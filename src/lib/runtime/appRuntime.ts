@@ -12,12 +12,56 @@ import {
   DetailedMessage,
   ServiceResponse,
   Vo,
-  Markups,
-  Values,
-  AppMetaData,
+  Form,
+  ViewComponentFactory,
+  AppCommonAttributes,
+  FormatterFunction,
+  ViewInitFunction,
 } from '../..';
 
-export type RuntimeApp = AppMetaData & {
+export type AppRuntime = AppCommonAttributes & {
+  /**
+   * URL for the server. All requests are sent to this url.
+   * Only local resources are used if the url is not set
+   */
+  serverUrl?: string;
+  /**
+   *  app-specific configuration parameters that may be used by app-specific functions
+   */
+  appParams?: StringMap<any>;
+  /**
+   * e.g. ./assets/images/
+   */
+  imageBasePath: string;
+
+  /**
+   * layout to render on load
+   */
+  startingLayout: string;
+
+  /**
+   * module to be selected by default on loading
+   */
+  startingModule: string;
+  /**
+   * how to get list of name-value pairs for drop-down boxes?
+   * run-time list sources are used to generate run-time components
+   * design-time list sources are converted as "valueLists"
+   */
+  listSources?: StringMap<ListSource>;
+  /**
+   * forms that are generated from records
+   */
+  forms?: StringMap<Form>;
+
+  /**
+   * ready responses are cached responses by serviceNames,  by the client.
+   * we may also decide to shift them to the server side on a need basis.
+   * this feature is useful during development and for demo purposes
+   * if a ready response is available, the response is used instead of calling a service
+   */
+  cachedResponses?: StringMap<ServiceResponse>;
+
   //////////// added by the app-layer by programmers
   /**
    * local lists are cached responses to getList(). Useful during development/demo
@@ -34,6 +78,7 @@ export type RuntimeApp = AppMetaData & {
    * functions with specs and actual implementations
    */
   functionDetails?: StringMap<FunctionDetails>;
+  viewComponentFactory?: ViewComponentFactory;
 };
 
 /**
@@ -113,16 +158,6 @@ export type FormValidationFunction = (
   fc: FormController
 ) => [{ fieldName: string; message: string }] | undefined;
 
-/**
- * function to format the value for output.
- * It can also set the mark-up attributes for the view-element
- * @param value
- */
-export type FormatterFunction = (
-  value: Value,
-  row: Values
-) => { value: string; markups: Markups };
-
 export type FunctionDetails =
   | { type: 'global'; fn: GlobalFunction }
   | { type: 'request'; fn: RequestFunction }
@@ -130,7 +165,15 @@ export type FunctionDetails =
   | { type: 'page'; fn: PageFunction }
   | { type: 'form'; fn: FormFunction | FormValidationFunction }
   | { type: 'value'; fn: ValueValidationFn }
-  | { type: 'format'; fn: FormatterFunction };
+  | { type: 'format'; fn: FormatterFunction }
+  | { type: 'init'; fn: ViewInitFunction };
+/**
+ * function type. type alias "FunctionDetails" defines the signature of each of these types
+ */
+export type FunctionType = FunctionDetails['type'];
+/**
+ * status returned by the controller when a function is requested at run time
+ */
 
 /**
  * status returned by the controller when a function is requested at run time
@@ -161,9 +204,9 @@ export type SchemaError = {
 /**
  * function that validates the supplied value, after parsing itq.
  */
-export type ValueValidationFn = (
-  /** non-empty */ value: string
-) => ValueValidationResult;
+export type ValueValidationFn = (value: {
+  value: string;
+}) => ValueValidationResult;
 /**
  * data-structure returned by a validation function.
  * value is undefined if the string could not be parsed into the right type
