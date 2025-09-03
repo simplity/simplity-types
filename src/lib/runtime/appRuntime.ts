@@ -12,14 +12,13 @@ import {
   DetailedMessage,
   ServiceResponse,
   Vo,
-  Form,
   ViewComponentFactory,
-  AppCommonAttributes,
   FormatterFunction,
   ViewInitFunction,
+  AppDesign,
 } from '../..';
 
-export type AppRuntime = AppCommonAttributes & {
+export type AppRuntime = AppDesign & {
   /**
    * URL for the server. All requests are sent to this url.
    * Only local resources are used if the url is not set
@@ -43,16 +42,6 @@ export type AppRuntime = AppCommonAttributes & {
    * module to be selected by default on loading
    */
   startingModule: string;
-  /**
-   * how to get list of name-value pairs for drop-down boxes?
-   * run-time list sources are used to generate run-time components
-   * design-time list sources are converted as "valueLists"
-   */
-  listSources?: StringMap<ListSource>;
-  /**
-   * forms that are generated from records
-   */
-  forms?: StringMap<Form>;
 
   /**
    * ready responses are cached responses by serviceNames,  by the client.
@@ -62,6 +51,10 @@ export type AppRuntime = AppCommonAttributes & {
    */
   cachedResponses?: StringMap<ServiceResponse>;
 
+  /**
+   * html fragments for view components as well as icons/images
+   */
+  htmls?: StringMap<string>;
   //////////// added by the app-layer by programmers
   /**
    * local lists are cached responses to getList(). Useful during development/demo

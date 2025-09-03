@@ -84,9 +84,6 @@ export type ServiceStatus =
  * There was an internal error on the server. It is being looked into.
  */
  | 'serverError';
-export declare const STATUS_DESCRIPTIONS: {
-    [status in ServiceStatus]: string;
-};
 /**
  * Structure of a Message received as part of a response
  */

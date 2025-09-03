@@ -1,5 +1,5 @@
-import { Service, AlertType, StringMap, Value, AppController, KeyedList, SimpleList, ValueList, FormController, PageController, DetailedMessage, ServiceResponse, Vo, Form, ViewComponentFactory, AppCommonAttributes, FormatterFunction, ViewInitFunction } from '../..';
-export type AppRuntime = AppCommonAttributes & {
+import { Service, AlertType, StringMap, Value, AppController, KeyedList, SimpleList, ValueList, FormController, PageController, DetailedMessage, ServiceResponse, Vo, ViewComponentFactory, FormatterFunction, ViewInitFunction, AppDesign } from '../..';
+export type AppRuntime = AppDesign & {
     /**
      * URL for the server. All requests are sent to this url.
      * Only local resources are used if the url is not set
@@ -22,22 +22,16 @@ export type AppRuntime = AppCommonAttributes & {
      */
     startingModule: string;
     /**
-     * how to get list of name-value pairs for drop-down boxes?
-     * run-time list sources are used to generate run-time components
-     * design-time list sources are converted as "valueLists"
-     */
-    listSources?: StringMap<ListSource>;
-    /**
-     * forms that are generated from records
-     */
-    forms?: StringMap<Form>;
-    /**
      * ready responses are cached responses by serviceNames,  by the client.
      * we may also decide to shift them to the server side on a need basis.
      * this feature is useful during development and for demo purposes
      * if a ready response is available, the response is used instead of calling a service
      */
     cachedResponses?: StringMap<ServiceResponse>;
+    /**
+     * html fragments for view components as well as icons/images
+     */
+    htmls?: StringMap<string>;
     /**
      * local lists are cached responses to getList(). Useful during development/demo
      * this is a run-time concept to override a design component at run time
