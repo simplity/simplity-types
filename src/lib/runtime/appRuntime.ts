@@ -51,10 +51,6 @@ export type AppRuntime = AppDesign & {
    */
   cachedResponses?: StringMap<ServiceResponse>;
 
-  /**
-   * html fragments for view components as well as icons/images
-   */
-  htmls?: StringMap<string>;
   //////////// added by the app-layer by programmers
   /**
    * local lists are cached responses to getList(). Useful during development/demo

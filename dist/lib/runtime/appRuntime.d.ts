@@ -29,10 +29,6 @@ export type AppRuntime = AppDesign & {
      */
     cachedResponses?: StringMap<ServiceResponse>;
     /**
-     * html fragments for view components as well as icons/images
-     */
-    htmls?: StringMap<string>;
-    /**
      * local lists are cached responses to getList(). Useful during development/demo
      * this is a run-time concept to override a design component at run time
      */

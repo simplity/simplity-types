@@ -1,4 +1,8 @@
 import { StringMap, Layout, MenuItem, Module, Page, ServiceSpec, Sql, PageTemplate, ValueSchema, PageAlteration, ListSource, FunctionType, Record, ValueList, ValueFormatter, Form } from '../..';
+/**
+ * All the metadata that captures the core design that are directly used at run time.
+ * This is the output of the design layer, and input to the runtime layer
+ */
 export type AppDesign = {
     name: string;
     version: string;
@@ -24,6 +28,10 @@ export type AppDesign = {
      * an App may follow naming convention like pageName.functionName if the app is quite large
      */
     functions?: StringMap<FunctionType>;
+    /**
+     * html fragments that are the building blocks of pages
+     */
+    htmls?: StringMap<string>;
     /**
      * page layouts. The way the page as the user views is laid out from its components
      */
@@ -58,7 +66,8 @@ export type AppDesign = {
     valueSchemas?: StringMap<ValueSchema>;
 };
 /**
- *   attributes that are input to as well as output from the design layer
+ *   All the metadata that captures the core design that are directly used at design time to generate
+ *   code and other artifacts.
  */
 export type GeneratorInput = {
     name: string;
@@ -82,6 +91,9 @@ export type GeneratorInput = {
      * small alteration to a designed or generated page.
      */
     alters?: StringMap<PageAlteration>;
+    /**
+     * all the messages that may be shown to the user
+     */
     messages?: StringMap<string>;
     /**
      * pages that are hand-coded by the app-designer, without using any template
