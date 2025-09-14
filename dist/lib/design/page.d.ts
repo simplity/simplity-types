@@ -499,7 +499,7 @@ export type Chart = BaseComponent & {
     compType: 'chart';
     chartType: ChartType;
     /**
-     * each field must be numeric.
+     * fields that supply the chart data. Each field must be numeric.
      */
     fields: ChartField[];
 };

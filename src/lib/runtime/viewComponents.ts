@@ -2,6 +2,8 @@ import {
   Alert,
   AppController,
   Button,
+  Chart,
+  ChartController,
   DataField,
   FormController,
   MultiReportPanel,
@@ -250,6 +252,7 @@ export type ContainerView =
   | PanelView
   | TableViewerView
   | TableEditorView
+  | ChartView
   | TabsView;
 /**
  * Field is a view control that is bound to a run-time data-element.
@@ -413,6 +416,29 @@ export interface TableEditorView extends BaseView {
    * If not specified, the defaultValue, if specified for that field, will be used as the initial value for a field
    */
   appendRow(fc: FormController, rowIdx: number, values?: Values): void;
+}
+
+/**
+ * Chart renders tabular data in a graphical format like bar, pie, line, etc..
+ */
+export interface ChartView extends BaseView {
+  /**
+   * A table viewer view MUST create a TableViewerController, by calling fc.newTableViewerController()
+   */
+  readonly cc: ChartController;
+  readonly fc: FormController;
+  readonly chart: Chart;
+  /**
+   * remove all rendered rows. Header, if any, is to be retained.
+   */
+  reset(): void;
+
+  /**
+   * render required rows for the incoming data-rows.
+   * @param data
+   * @param selectedNames if this is a configurable table, then this is required
+   */
+  renderData(data: Values[], selectedNames?: string[]): void;
 }
 
 /**

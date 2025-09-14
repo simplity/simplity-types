@@ -1,4 +1,4 @@
-import { BaseView, DetailedMessage, EventDetails, EventName, FilterCondition, Form, PageController, Panel, SortBy, StringMap, TableEditorView, TableViewerView, Value, Values, Vo } from '../..';
+import { BaseView, ChartView, DetailedMessage, EventDetails, EventName, FilterCondition, Form, PageController, Panel, SortBy, StringMap, TableEditorView, TableViewerView, Value, Values, Vo } from '../..';
 /**
  * base interface to be implemented by the form/table controllers
  */
@@ -215,7 +215,7 @@ export interface FormController extends DataController {
      * called by a chart-view inside its constructor, but before the chart is rendered
      * @param view
      */
-    newChartController(view: BaseView): ChartController;
+    newChartController(view: ChartView): ChartController;
     /**
      * This form has a table-editor, and the tableViewer is just being constructed.
      * Note that the view calls this method inside of its constructor, but before rendering the view.

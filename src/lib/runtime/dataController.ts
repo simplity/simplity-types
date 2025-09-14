@@ -1,5 +1,6 @@
 import {
   BaseView,
+  ChartView,
   DetailedMessage,
   EventDetails,
   EventName,
@@ -266,7 +267,7 @@ export interface FormController extends DataController {
    * called by a chart-view inside its constructor, but before the chart is rendered
    * @param view
    */
-  newChartController(view: BaseView): ChartController;
+  newChartController(view: ChartView): ChartController;
 
   /**
    * This form has a table-editor, and the tableViewer is just being constructed.
